@@ -21,10 +21,6 @@ app.get('/', (req, res) => {
   res.send('API is running');
 });
 
-app.get('/motors', (req, res) => {
-  res.status(200).send('motor route');
-});
-
 app.listen(PORT, () => {
   console.log(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
