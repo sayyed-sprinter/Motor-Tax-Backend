@@ -15,30 +15,13 @@ const storage = multer.diskStorage({
   },
 });
 
-function checkFileType(file, cb) {
-  const filetypes = /pdf|jpg|jpeg|png/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (extname && mimetype) {
-    return cb(null, true);
-  } else {
-    cb('Images and pdf only!');
-  }
-}
-
-const upload = multer({
-  storage,
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
-});
+const upload = multer({ storage: storage });
 
 router.post('/document', upload.single('documents'), (req, res) => {
   try {
     res.json({
       success: true,
-      image: `/${req.file.path}`,
+      file: { name: req.file.filename, path: req.file.path },
     });
   } catch (err) {
     console.error(err);
