@@ -24,7 +24,7 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
       province: 'Narayani',
       lot: 45,
       type: 'Bike',
-      engine_cc: engine_cc,
+      engine_cc: `${engine_cc}`,
       registered_date: '2020-01-01',
     });
 
