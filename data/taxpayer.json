@@ -1,0 +1,32 @@
+[
+  {
+    "taxpayer_name": "sayyed abrar akhtar",
+    "bluebook_number": "06585127",
+    "vehicle_number": "1528",
+    "province": "Bagmati",
+    "lot": "35",
+    "type": "Bike",
+    "cc": "500",
+    "registered_date": "2002/07/05"
+  },
+  {
+    "taxpayer_name": "sayyed akhtar",
+    "bluebook_number": "06585127",
+    "vehicle_number": "1528",
+    "province": "Bagmati",
+    "lot": "35",
+    "type": "Bike",
+    "cc": "500",
+    "registered_date": "2002/07/05"
+  },
+  {
+    "taxpayer_name": "sayyed abrar",
+    "bluebook_number": "06585127",
+    "vehicle_number": "1528",
+    "province": "Bagmati",
+    "lot": "35",
+    "type": "Bike",
+    "cc": "500",
+    "registered_date": "2002/07/05"
+  }
+]

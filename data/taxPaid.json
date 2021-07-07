@@ -1,0 +1,23 @@
+[
+  {
+    "dur_month": "05",
+    "due_date": "07",
+    "tax_amount": "5000",
+    "fine": "1528",
+    "pollutant_charge": "2500"
+  },
+  {
+    "dur_month": "05",
+    "due_date": "07",
+    "tax_amount": "5000",
+    "fine": "1528",
+    "pollutant_charge": "2500"
+  },
+  {
+    "dur_month": "05",
+    "due_date": "07",
+    "tax_amount": "5000",
+    "fine": "1528",
+    "pollutant_charge": "2500"
+  }
+]

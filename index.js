@@ -1,16 +1,21 @@
-const express = require('express')
+const express = require('express');
+
+const taxpayerRoutes = require('./routes/taxpayerRoutes');
+let port = process.env.PORT || 3000;
+
 const app = express();
-const displayData = require("./data.json");
+app.use(express.json());
 
-let port = process.env.PORT || 3000
+app.use('/api/taxpayer', taxpayerRoutes);
+
 app.get('/', (req, res) => {
-    res.send("API is running")
-})
+  res.send('API is running');
+});
 
-app.get("/motors", (req, res)=> {
-    res.status(200).send(displayData)
-})
+app.get('/motors', (req, res) => {
+  res.status(200).send('motor route');
+});
 
-app.listen(port, ()=> {
-    console.log("API STARTED ON DEV MODE and listening on port 3000")
-})
+app.listen(port, () => {
+  console.log('API STARTED and listening on port 3000');
+});
