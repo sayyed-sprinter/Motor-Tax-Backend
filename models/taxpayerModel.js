@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const taxpayerSchema = new mongoose.Schema(
   {
     taxpayer_name: { type: String, required: true },
-    bluebook_number: { type: String, required: true },
+    bluebook_number: { type: String, required: true, unique: true },
     vehicle_number: { type: String, required: true },
     policy_number: { type: String, required: true },
     province: { type: String, required: true },
