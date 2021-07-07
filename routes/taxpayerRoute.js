@@ -13,10 +13,8 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     bluebook_number: bluebook_number,
   });
 
-  res.send(bluebook_number);
-
   if (fetchTaxpayer) {
-    res.status(200).send({ success: true, data: fetchTaxpayer });
+    res.status(200).send({ success: true, data: fetchTaxpayer[0] });
   } else {
     const newTaxpayer = new Taxpayer({
       taxpayer_name: 'Anonymous',
