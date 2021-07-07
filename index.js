@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/taxpayer', taxpayerRoutes);
-app.use('/api/uploads', taxpayerRoutes);
+app.use('/api/uploads', uploadRoute);
 
 app.get('/', (req, res) => {
   res.send('API is running');
