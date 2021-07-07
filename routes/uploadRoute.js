@@ -23,7 +23,7 @@ function checkFileType(file, cb) {
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb('Images only!');
+    cb('Images and pdf only!');
   }
 }
 
@@ -34,7 +34,7 @@ const upload = multer({
   },
 });
 
-router.post('/document', upload.single('image'), (req, res) => {
+router.post('/document', upload.single('documents'), (req, res) => {
   try {
     res.json({
       success: true,

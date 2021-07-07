@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 var cors = require('cors');
@@ -17,6 +18,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+const _dirname = path.resolve();
+app.use('/uploads', express.static(path.join(_dirname, '/uploads')));
 
 app.use('/api/taxpayer', taxpayerRoutes);
 app.use('/api/uploads', uploadRoute);
