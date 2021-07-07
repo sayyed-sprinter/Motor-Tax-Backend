@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+var cors = require('cors');
 const dotenv = require('dotenv');
 const colors = require('colors');
 
@@ -12,6 +13,7 @@ connectDb();
 
 let PORT = process.env.PORT || 3000;
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
