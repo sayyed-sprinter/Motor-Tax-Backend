@@ -6,6 +6,7 @@ const colors = require('colors');
 
 const connectDb = require('./config/db');
 const taxpayerRoutes = require('./routes/taxpayerRoute');
+const uploadRoute = require('./routes/uploadRoute');
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/taxpayer', taxpayerRoutes);
+app.use('/api/uploads', taxpayerRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running');
