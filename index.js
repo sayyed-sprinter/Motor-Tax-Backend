@@ -1,10 +1,19 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+const colors = require('colors');
 
-const taxpayerRoutes = require('./routes/taxpayerRoutes');
-let port = process.env.PORT || 3000;
+const connectDb = require('./config/db');
+const taxpayerRoutes = require('./routes/taxpayerRoute');
 
+dotenv.config();
+
+connectDb();
+
+let PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/taxpayer', taxpayerRoutes);
 
@@ -16,6 +25,8 @@ app.get('/motors', (req, res) => {
   res.status(200).send('motor route');
 });
 
-app.listen(port, () => {
-  console.log('API STARTED and listening on port 3000');
+app.listen(PORT, () => {
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
+  );
 });
