@@ -1,0 +1,43 @@
+[
+    
+    {
+         "name": "BMW",
+         "CC": "1000",
+         "fine": "true"
+    },
+    {
+        "name": "Ducati",
+        "CC": "2000",
+        "fine": "false"
+   },
+   {
+    "name": "Ducati",
+    "CC": "2000",
+    "fine": "false"
+},
+{
+    "name": "Ducati",
+    "CC": "2000",
+    "fine": "false"
+},
+{
+    "name": "Ducati",
+    "CC": "2000",
+    "fine": "false"
+},
+{
+    "name": "Ducati",
+    "CC": "2000",
+    "fine": "false"
+},
+{
+    "name": "Ducati",
+    "CC": "2000",
+    "fine": "false"
+},
+{
+    "name": "Ducati",
+    "CC": "2000",
+    "fine": "false"
+}
+]
