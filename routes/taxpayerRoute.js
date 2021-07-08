@@ -10,17 +10,18 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
   const { bluebook_number, vehicle_number, policy_number, engine_cc } =
     req.body;
   const fetchTaxpayer = await Taxpayer.find({
-    bluebook_number: bluebook_number,
+    bluebook_number: `${bluebook_number}`,
   });
-  console.log(req.body);
 
-  if (fetchTaxpayer) {
+  if (fetchTaxpayer === null) {
+    console.log(`entered if: ${fetchTaxpayer}`);
     res.status(200).send({
       success: true,
-      data: fetchTaxpayer[0],
+      taxpayer: fetchTaxpayer,
       body: { bluebook_number, vehicle_number, policy_number, engine_cc },
     });
   } else {
+    console.log(`entered else: ${fetchTaxpayer}`);
     const newTaxpayer = new Taxpayer({
       taxpayer_name: 'Anonymous',
       bluebook_number: `${bluebook_number}`,
@@ -34,9 +35,10 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     });
 
     const taxpayerAdded = await newTaxpayer.save();
+    console.log('hello');
     res.status(200).send({
       success: true,
-      data: taxpayerAdded,
+      taxpayer: taxpayerAdded,
       body: { bluebook_number, vehicle_number, policy_number, engine_cc },
     });
   }
