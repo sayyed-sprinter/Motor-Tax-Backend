@@ -26,58 +26,42 @@ const convertMonthNumeric = (month) => {
 
 const calculateTaxRate = (type, cc) => {
   let rate = 0;
-  switch (type) {
-    case 'bike' || 'Bike' || 'BIKE':
-      switch (cc) {
-        case cc < 125:
-          rate = 2500;
-          break;
-
-        case cc < 150:
-          rate = 4000;
-          break;
-
-        case cc < 250:
-          rate = 8000;
-          break;
-
-        case cc < 400:
-          rate = 16000;
-          break;
-
-        default:
-          rate = 30000;
-          break;
-      }
-      break;
-    case 'car' || 'Car' || 'CAR':
-      switch (cc) {
-        case cc <= 1000:
-          rate = 21000;
-          break;
-
-        case cc < 1500:
-          rate = 23000;
-          break;
-
-        case cc < 2000:
-          rate = 25000;
-          break;
-
-        case cc < 2500:
-          rate = 38000;
-          break;
-
-        case cc < 2900:
-          rate = 45000;
-          break;
-
-        default:
-          rate = 100000;
-          break;
-      }
-      break;
+  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc < 125)) {
+    rate = 2500;
   }
+  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc < 150)) {
+    rate = 4000;
+  }
+  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc < 250)) {
+    rate = 8000;
+  }
+  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc < 400)) {
+    rate = 16000;
+  }
+  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc >= 400)) {
+    rate = 30000;
+  }
+
+  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 1000)) {
+    rate = 21000;
+  }
+  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 1500)) {
+    rate = 23000;
+  }
+  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 2000)) {
+    rate = 25000;
+  }
+  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 2500)) {
+    rate = 38000;
+  }
+  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 2900)) {
+    rate = 45000;
+  }
+  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc >= 2900)) {
+    rate = 60000;
+  }
+
+  return rate;
 };
 
 const calculateTax = (registeredMonth, registeredDay, rate = 2500) => {
@@ -139,10 +123,20 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     const registeredMonth = convertMonthNumeric(registeredDate.split(' ')[1]);
     const registeredDay = registeredDate.split(' ')[2];
     const registeredYear = registeredDate.split(' ')[3];
+    const type = `${fetchTaxpayer[0].type}`;
+    const cc = `${fetchTaxpayer[0].engine_cc}`;
 
-    console.log(`${registeredYear}, ${registeredMonth}, ${registeredDay}`);
+    console.log(
+      `${registeredYear}, ${registeredMonth}, ${registeredDay}, ${type}, ${cc}`
+    );
 
-    const taxDetails = calculateTax(registeredMonth, registeredDay);
+    const taxableRate = calculateTaxRate(type, cc);
+
+    const taxDetails = calculateTax(
+      registeredMonth,
+      registeredDay,
+      taxableRate
+    );
 
     const newTaxRecords = new taxRecord({
       bluebook_number: bluebook_number,
