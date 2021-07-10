@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 var cors = require('cors');
 const dotenv = require('dotenv');
 const colors = require('colors');
+const morgan = require('morgan');
 
 const connectDb = require('./config/db');
 const taxpayerRoutes = require('./routes/taxpayerRoute');
@@ -19,6 +20,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan('dev'));
 
 const _dirname = path.resolve();
 app.use('/uploads', express.static(path.join(_dirname, '/uploads')));

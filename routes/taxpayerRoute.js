@@ -24,74 +24,86 @@ const convertMonthNumeric = (month) => {
   return date;
 };
 
-const calculateTaxRate = (type, cc) => {
+const calculateTaxRate = (vehicleType, cc) => {
   let rate = 0;
-  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc < 125)) {
-    rate = 2500;
+  let type = vehicleType.toLowerCase();
+  if (type == 'bike' && cc <= 125) {
+    return (rate = 2500);
   }
-  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc < 150)) {
-    rate = 4000;
+  if (type == 'bike' && cc <= 150) {
+    return (rate = 4000);
   }
-  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc < 250)) {
-    rate = 8000;
+  if (type == 'bike' && cc <= 250) {
+    return (rate = 8000);
   }
-  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc < 400)) {
-    rate = 16000;
+  if (type == 'bike' && cc <= 400) {
+    return (rate = 16000);
   }
-  if (type == 'Bike' || type == 'bike' || (type == 'BIKE' && cc >= 400)) {
-    rate = 30000;
-  }
-
-  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 1000)) {
-    rate = 21000;
-  }
-  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 1500)) {
-    rate = 23000;
-  }
-  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 2000)) {
-    rate = 25000;
-  }
-  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 2500)) {
-    rate = 38000;
-  }
-  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc < 2900)) {
-    rate = 45000;
-  }
-  if (type == 'car' || type == 'Car' || (type == 'CAR' && cc >= 2900)) {
-    rate = 60000;
+  if (type == 'bike' && cc > 400) {
+    return (rate = 30000);
   }
 
-  return rate;
+  if (type == 'car' && cc <= 1000) {
+    return (rate = 21000);
+  }
+  if (type == 'car' && cc <= 1500) {
+    return (rate = 23000);
+  }
+  if (type == 'car' && cc <= 2000) {
+    return (rate = 25000);
+  }
+  if (type == 'car' && cc <= 2500) {
+    return (rate = 38000);
+  }
+  if (type == 'car' && cc <= 2900) {
+    return (rate = 45000);
+  }
+  if (type == 'car' && cc >= 2900) {
+    return (rate = 60000);
+  }
 };
 
-const calculateTax = (registeredMonth, registeredDay, rate = 2500) => {
+const calculateTax = (
+  registeredMonth,
+  registeredDay,
+  rate = 2500,
+  lastTaxPaidOn = 2015
+) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const currentDay = new Date().getDate();
-  let taxDetails;
+  let taxDetails = {
+    numOfYears: 1,
+    chargeableTax: 0,
+    fineForYears: 0,
+    fine: 0,
+  };
 
   // 1. Get last paid year and calculate the tax amount
 
-  const numOfYears = currentYear - 2018;
-  const chargeableTax = numOfYears * rate;
+  const numOfYears =
+    currentYear - lastTaxPaidOn > 1 ? currentYear - lastTaxPaidOn : 1;
+
+  const chargeableTax = parseInt(numOfYears) * rate;
 
   // Calculate Num of months
   const numOfMonths = currentMonth - registeredMonth;
   const numOfDays = currentDay - registeredDay;
 
-  console.log(
-    `currentyear: ${currentYear}, Num of years: ${numOfYears} months: ${numOfMonths} days: ${numOfDays}`
-  );
+  // console.log(
+  //   `currentyear: ${currentYear}, Num of years: ${numOfYears} months: ${numOfMonths} days: ${numOfDays}`
+  // );
 
   // 2. check if fine should be charged or not
   if (numOfYears > 1 && numOfMonths > 3) {
     if (numOfDays > 0) {
-      console.log('entered');
+      // console.log('entered');
       const fineForYears = numOfYears - 1;
       const fine = (fineForYears * rate * 32) / 100;
-      console.log(
-        `Chargebale tax = ${chargeableTax}, fine for years = ${fineForYears} and fine = ${fine}`
-      );
+      // console.log(
+      //   `Chargebale tax = ${chargeableTax}, fine for years = ${fineForYears} and fine = ${fine}`
+      // );
+      console.log(`whats chargeableTax2: ${chargeableTax}`);
       taxDetails = {
         numOfYears: numOfYears,
         chargeableTax: chargeableTax,
@@ -100,6 +112,7 @@ const calculateTax = (registeredMonth, registeredDay, rate = 2500) => {
       };
     }
   }
+
   return taxDetails;
 };
 
@@ -114,11 +127,32 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     citizenship_file_path,
     policy_file_path,
   } = req.body;
-  const fetchTaxpayer = await Taxpayer.find({
-    bluebook_number: `${bluebook_number}`,
-  });
 
-  if (fetchTaxpayer[0] !== undefined) {
+  const fetchTaxpayer = await Taxpayer.find(
+    {
+      $and: [
+        { bluebook_number: bluebook_number },
+        { vehicle_number: vehicle_number },
+        { engine_cc: engine_cc },
+      ],
+    },
+    function (err, result) {
+      if (!err) return result;
+    }
+  );
+
+  const fetchLastTaxPaidYear = await taxRecord
+    .findOne({
+      bluebook_number: bluebook_number,
+    })
+    .sort({ createdAt: -1 });
+
+  const lastTaxPaidYear = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[3];
+  console.log(lastTaxPaidYear);
+
+  // console.log(`######### => ${fetchTaxpayer}, ${fetchTaxpayer[0]}`);
+
+  if (fetchTaxpayer[0] != undefined) {
     const registeredDate = `${fetchTaxpayer[0].registered_date}`;
     const registeredMonth = convertMonthNumeric(registeredDate.split(' ')[1]);
     const registeredDay = registeredDate.split(' ')[2];
@@ -126,21 +160,27 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     const type = `${fetchTaxpayer[0].type}`;
     const cc = `${fetchTaxpayer[0].engine_cc}`;
 
-    console.log(
-      `${registeredYear}, ${registeredMonth}, ${registeredDay}, ${type}, ${cc}`
-    );
+    // console.log(
+    //   `${registeredYear}, ${registeredMonth}, ${registeredDay}, ${type}, ${cc}`
+    // );
 
     const taxableRate = calculateTaxRate(type, cc);
+
+    console.log(taxableRate);
 
     const taxDetails = calculateTax(
       registeredMonth,
       registeredDay,
-      taxableRate
+      taxableRate,
+      lastTaxPaidYear
     );
+
+    const newDate = new Date();
+    const currDate = newDate.getFullYear();
 
     const newTaxRecords = new taxRecord({
       bluebook_number: bluebook_number,
-      paidYear: 2018,
+      paidYear: currDate,
       paidMonth: registeredMonth,
       paidDate: registeredDay,
       taxAmount: `${taxDetails.chargeableTax}`,
@@ -150,12 +190,18 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     });
     const recordInsertedObj = await newTaxRecords.save();
 
-    console.log(fetchTaxpayer[0]);
+    // console.log(fetchTaxpayer[0]);
     const taxpayerObj = { ...fetchTaxpayer[0] };
     const taxpayerData = taxpayerObj._doc;
     const recordInserted = recordInsertedObj._doc;
 
     res.status(200).send({ success: true, ...taxpayerData, ...recordInserted });
+  } else {
+    res.status(404).send({
+      success: false,
+      message:
+        'Unable to fetch your data! Please check your credentials and try again.',
+    });
   }
 });
 
