@@ -147,7 +147,13 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     })
     .sort({ createdAt: -1 });
 
+  console.log(`${fetchLastTaxPaidYear.createdAt}`);
+
   const lastTaxPaidYear = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[3];
+  const lastTaxPaidMonth = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[1];
+  const lastTaxPaidDay = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[2];
+
+  const lastTaxPaidOn = `${lastTaxPaidYear}/${lastTaxPaidMonth}/${lastTaxPaidDay}`;
   console.log(lastTaxPaidYear);
 
   // console.log(`######### => ${fetchTaxpayer}, ${fetchTaxpayer[0]}`);
@@ -195,7 +201,12 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     const taxpayerData = taxpayerObj._doc;
     const recordInserted = recordInsertedObj._doc;
 
-    res.status(200).send({ success: true, ...taxpayerData, ...recordInserted });
+    res.status(200).send({
+      success: true,
+      ...taxpayerData,
+      ...recordInserted,
+      lastTaxPaidOn: lastTaxPaidOn,
+    });
   } else {
     res.status(404).send({
       success: false,
