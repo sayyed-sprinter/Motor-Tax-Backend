@@ -10,6 +10,7 @@ const morgan = require('morgan');
 const connectDb = require('./config/db');
 const taxpayerRoutes = require('./routes/taxpayerRoute');
 const uploadRoute = require('./routes/uploadRoute');
+const insuranceAgentsRoutes = require('./routes/insuranceAgentsRoute');
 
 dotenv.config();
 
@@ -26,7 +27,8 @@ const _dirname = path.resolve();
 app.use('/uploads', express.static(path.join(_dirname, '/uploads')));
 
 app.use('/api/taxpayer', taxpayerRoutes);
-app.use('/api/uploads', uploadRoute);
+app.use('/api/taxpayer', taxpayerRoutes);
+app.use('/api/insurance-agents', insuranceAgentsRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running');
@@ -38,4 +40,4 @@ app.listen(PORT, () => {
   );
 });
 
-module.exports=app
+module.exports = app;
