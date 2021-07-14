@@ -27,7 +27,7 @@ const _dirname = path.resolve();
 app.use('/uploads', express.static(path.join(_dirname, '/uploads')));
 
 app.use('/api/taxpayer', taxpayerRoutes);
-app.use('/api/taxpayer', taxpayerRoutes);
+app.use('/api/uploads', uploadRoute);
 app.use('/api/insurance-agents', insuranceAgentsRoutes);
 
 app.get('/', (req, res) => {
