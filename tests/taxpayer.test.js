@@ -24,7 +24,7 @@ describe('POST taxpayer info', () => {
 
 describe('POST insurance info', () => {
   jest.setTimeout(30000);
-  test('It should post taxpayer details and return tax details', async () => {
+  test('It should allow user to buy insurance online', async () => {
     const stateObj = {
       bluebook_number: '5',
       vehicle_number: '5555',
@@ -36,6 +36,17 @@ describe('POST insurance info', () => {
     };
     jest.setTimeout(50000);
     const response = await request(app).post('/api/insurance/').send(stateObj);
+    jest.setTimeout(100000);
+  //  expect(response.body.success).toEqual(true);
+  });
+});
+
+describe('GET insuranceagent info', () => {
+  jest.setTimeout(30000);
+  test('It should allow user to select agent ', async () => {
+    
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/insurance-agents');
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
