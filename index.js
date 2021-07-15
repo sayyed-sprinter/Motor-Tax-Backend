@@ -11,6 +11,7 @@ const connectDb = require('./config/db');
 const taxpayerRoutes = require('./routes/taxpayerRoute');
 const uploadRoute = require('./routes/uploadRoute');
 const insuranceAgentsRoutes = require('./routes/insuranceAgentsRoute');
+const insuranceRoute = require('./routes/insuranceRoute');
 
 dotenv.config();
 
@@ -29,6 +30,9 @@ app.use('/uploads', express.static(path.join(_dirname, '/uploads')));
 app.use('/api/taxpayer', taxpayerRoutes);
 app.use('/api/uploads', uploadRoute);
 app.use('/api/insurance-agents', insuranceAgentsRoutes);
+app.use('/api/pay-insurance',insuranceRoute);
+
+
 
 app.get('/', (req, res) => {
   res.send('API is running');
