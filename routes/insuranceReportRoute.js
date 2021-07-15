@@ -2,7 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 
 const Taxpayer = require('../models/taxpayerModel');
-const insurance=require('../models/insuranceModel');
+const insuranceReport=require('../models/insuranceReportModel');
 
 const router = express.Router();
 
@@ -103,17 +103,17 @@ const fetchVehicleDetailsForInsurance = asyncHandler(async (req, res) => {
    }
    let insuranceExpiryDate= calculateInsuranceExpireDate()
 
-    const  insuranceReports= new insurance({
+    const  insuranceReports= new insuranceReport({
       bluebook_number: bluebook_number,
       insuranceAmount: insuranceAmount,
-      vehicle_number:vehicle_number,
+      vehicle_number:vehicle_number ,
       engine_cc:engine_cc,
       insurance_type:"Third party",
       taxpayer_name:taxpayer_name,
       type:type,
       insuranceExpiryDate:insuranceExpiryDate,
       insurance_company:insurance_company,
-     /*  */ driver:"500000",
+      driver:"500000",
       conductor:"500000",
       helper:"500000",
       passenger:"500000",

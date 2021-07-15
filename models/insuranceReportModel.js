@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const insuranceSchema = new mongoose.Schema(
+const insuranceReportSchema = new mongoose.Schema(
   {
     insurance_company: { type: String, required: true, unique: true },
     insurance_type:{type:String, required:true, unique:true},
@@ -21,6 +21,6 @@ const insuranceSchema = new mongoose.Schema(
   }
 );
 
-const insurance = mongoose.model('insurance', insuranceSchema);
+const insuranceReport = mongoose.model('insurance', insuranceReportSchema);
 
-module.exports = insurance;
+module.exports = insuranceReport;
