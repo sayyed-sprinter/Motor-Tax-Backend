@@ -3,60 +3,31 @@ const asyncHandler = require('express-async-handler');
 
 const Taxpayer = require('../models/taxpayerModel');
 const insuranceReport = require('../models/insuranceReportModel');
+const taxRecord = require('../models/taxRecordModel');
+const insuranceagents = require('../models/insuranceAgentsModel');
+const insurancecoverage = require('../models/insuranceCoverageModel');
 
 const router = express.Router();
 
-const calculateInsurance = (vehicleType, cc) => {
-  let vechile_Type = vehicleType.toLowerCase();
-  let engineCC = cc;
-  let insuranceAmount = 0;
-
-  if (vechile_Type === 'bike') {
-    if (engineCC < 126) {
-      return (insuranceAmount = 1200);
-    }
-    if (engineCC < 161) {
-      return (insuranceAmount = 1400);
-    }
-    if (engineCC < 251) {
-      return (insuranceAmount = 1500);
-    }
-    if (engineCC < 401) {
-      return (insuranceAmount = 1700);
-    }
-    if (engineCC < 651) {
-      return (insuranceAmount = 2200);
-    }
-    if (engineCC > 650) {
-      return (insuranceAmount = 2600);
-    }
+const ccValue = (cc) => {
+  if (cc <= 122) {
+    return 'up to 125';
   }
-
-  if (vechile_Type === 'car') {
-    //for car
-    if (engineCC < 1001) {
-      return (insuranceAmount = 7000);
-    }
-    if (engineCC < 1501) {
-      return (insuranceAmount = 9000);
-    }
-    if (engineCC < 2001) {
-      return (insuranceAmount = 12000);
-    }
-    if (engineCC < 2501) {
-      return (insuranceAmount = 14000);
-    }
-    if (engineCC < 2901) {
-      return (insuranceAmount = 16000);
-    }
-    if (engineCC > 2901) {
-      return (insuranceAmount = 19000);
-    }
+  if (cc < 150) {
+    return 'up to 150';
   }
-  return insuranceAmount;
+  if (cc <= 250) {
+    return 'up to 250';
+  }
+  if (cc <= 400) {
+    return 'up to 400';
+  }
+  if (cc > 400) {
+    return 'more than 400';
+  }
 };
 
-const fetchVehicleDetailsForInsurance = asyncHandler(async (req, res) => {
+const generateInsuranceReport = asyncHandler(async (req, res) => {
   const {
     bluebook_number,
     vehicle_number,
@@ -66,7 +37,7 @@ const fetchVehicleDetailsForInsurance = asyncHandler(async (req, res) => {
     citizenship_file_path,
   } = req.body;
 
-  const fetchVehicleData = await Taxpayer.find(
+  const fetchTaxpayer = await Taxpayer.find(
     {
       $and: [
         { bluebook_number: bluebook_number },
@@ -79,49 +50,84 @@ const fetchVehicleDetailsForInsurance = asyncHandler(async (req, res) => {
     }
   );
 
-  if (fetchVehicleData[0] != undefined) {
-    const type = `${fetchVehicleData[0].type}`;
-    const cc = `${fetchVehicleData[0].engine_cc}`;
-    const taxpayer_name = `${fetchVehicleData[0].taxpayer_name}`;
-
-    const insuranceAmount = calculateInsurance(type, cc);
-
-    console.log('insurance amount is:' + insuranceAmount);
-
-    // calculate expire date
-    function calculateInsuranceExpireDate() {
-      var d = new Date();
-      var year = d.getFullYear();
-      var month = d.getMonth();
-      var day = d.getDate();
-      var insuranceExp = new Date(year + 1, month, day);
-      return insuranceExp;
-    }
-    let insuranceExpiryDate = calculateInsuranceExpireDate();
-
-    const insuranceReports = new insuranceReport({
+  const fetchLastTaxPaidYear = await taxRecord
+    .findOne({
       bluebook_number: bluebook_number,
-      insuranceAmount: insuranceAmount,
-      vehicle_number: vehicle_number,
-      engine_cc: engine_cc,
-      insurance_type: 'Third party',
-      taxpayer_name: taxpayer_name,
-      type: type,
-      insuranceExpiryDate: insuranceExpiryDate,
-      insurance_company: insurance_company,
-      driver: '500000',
-      conductor: '500000',
-      helper: '500000',
-      passenger: '500000',
-      medical_expenses: '300000',
-    });
-    const recordInserted = await insuranceReports.save();
-    const policy_number = recordInserted._id;
+    })
+    .sort({ createdAt: -1 });
 
-    res.status(200).send({
-      success: true,
-      insuranceReports,
-    });
+  const lastTaxPaidYear = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[3];
+
+  const newDate = new Date();
+  const currDate = newDate.getFullYear();
+
+  if (fetchTaxpayer[0] != undefined) {
+    if (currDate > lastTaxPaidYear) {
+      const vehicleType = `${fetchTaxpayer[0].type}`;
+      const vehicleCC = parseInt(`${fetchTaxpayer[0].engine_cc}`);
+      const taxpayer_name = `${fetchTaxpayer[0].taxpayer_name}`;
+      const vehicleCCStr = ccValue(vehicleCC);
+
+      const expiryDate = new Date(
+        currDate + 1,
+        newDate.getMonth(),
+        newDate.getDate()
+      );
+
+      // GET ID OF INSURANCE COMPANY
+      const premiumDetails = await insuranceagents.findOne({
+        insurance_company: insurance_company,
+      });
+
+      // GET COVERAGES OF BIKE FILTERED WITH ENGINE_CC
+      const coverages = await insurancecoverage.find(
+        {
+          $and: [{ vehicle_type: 'bike' }, { engine_cc: vehicleCCStr }],
+        },
+        function (err, result) {
+          if (!err) return result;
+        }
+      );
+
+      // INITIATE OBJ, FILTER COVERAGE OF COMPANY AND PUT INTO OBJ
+      let coverageObj = {};
+      coverages.forEach((coverage) => {
+        if (premiumDetails._id == coverage.insurance_company) {
+          coverageObj = coverage;
+        }
+      });
+
+      const insuranceReports = new insuranceReport({
+        taxpayer_name: taxpayer_name,
+        insurance_company: insurance_company,
+        bluebook_number: bluebook_number,
+        vehicle_number: vehicle_number,
+        insuranceExpiryDate: expiryDate,
+        engine_cc: engine_cc,
+        type: `${coverageObj.vehicle_type}`,
+        insurance_type: `${coverageObj.insurance_type}`,
+        premium: coverageObj.premium,
+        death: `${coverageObj.death}`,
+        disabled: `${coverageObj.disabled}`,
+        injured: `${coverageObj.injured}`,
+        medical_expenses: `${coverageObj.medical_expenses}`,
+        attendant_expenses: `${coverageObj.attendant_expenses}`,
+      });
+      const recordInserted = await insuranceReports.save();
+      const policy_number = recordInserted._id;
+
+      console.log(recordInserted);
+
+      res.status(200).send({
+        success: true,
+        insuranceReports,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: 'tax-paid',
+      });
+    }
   } else {
     res.status(404).send({
       success: false,
@@ -131,6 +137,6 @@ const fetchVehicleDetailsForInsurance = asyncHandler(async (req, res) => {
   }
 });
 
-router.route('/').post(fetchVehicleDetailsForInsurance);
+router.route('/').post(generateInsuranceReport);
 
 module.exports = router;

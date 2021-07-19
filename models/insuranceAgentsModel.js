@@ -12,9 +12,9 @@ const insuranceAgentsSchema = new mongoose.Schema(
   }
 );
 
-const insuranceAgents = mongoose.model(
-  'insuranceAgents',
+const insuranceagents = mongoose.model(
+  'insuranceagents',
   insuranceAgentsSchema
 );
 
-module.exports = insuranceAgents;
+module.exports = insuranceagents;

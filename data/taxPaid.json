@@ -1,23 +1,12 @@
 [
   {
-    "dur_month": "05",
-    "due_date": "07",
-    "tax_amount": "5000",
-    "fine": "1528",
-    "pollutant_charge": "2500"
-  },
-  {
-    "dur_month": "05",
-    "due_date": "07",
-    "tax_amount": "5000",
-    "fine": "1528",
-    "pollutant_charge": "2500"
-  },
-  {
-    "dur_month": "05",
-    "due_date": "07",
-    "tax_amount": "5000",
-    "fine": "1528",
-    "pollutant_charge": "2500"
+    "bluebook_number": "5",
+    "paidYear": "2018",
+    "paidMonth": "07",
+    "paidDate": "12",
+    "taxAmount": "2500",
+    "taxOverdue": "3",
+    "penaltyOnOverdue": "2500",
+    "pollutingCharge": "0"
   }
 ]

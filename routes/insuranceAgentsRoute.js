@@ -1,12 +1,12 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 
-const insuranceAgents = require('../models/insuranceAgentsModel');
+const insuranceagents = require('../models/insuranceAgentsModel');
 
 const router = express.Router();
 
 const allInsuranceAgents = asyncHandler(async (req, res) => {
-  const allInsuranceAgents = await insuranceAgents.find();
+  const allInsuranceAgents = await insuranceagents.find();
 
   try {
     res

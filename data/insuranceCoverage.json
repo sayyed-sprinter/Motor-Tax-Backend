@@ -1,0 +1,218 @@
+[
+  {
+    "insurance_company": "60f41333ab8a791e044a46de",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 125",
+    "premium": 1700,
+    "death": "500000",
+    "disabled": "500000",
+    "injured": "250000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "45 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f41333ab8a791e044a46de",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 150",
+    "premium": 2200,
+    "death": "600000",
+    "disabled": "600000",
+    "injured": "300000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "50 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f41333ab8a791e044a46de",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 250",
+    "premium": 2500,
+    "death": "650000",
+    "disabled": "650000",
+    "injured": "300000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "55 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f41333ab8a791e044a46de",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 400",
+    "premium": 3000,
+    "death": "700000",
+    "disabled": "700000",
+    "injured": "350000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "60 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f41333ab8a791e044a46de",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "more than 400",
+    "premium": 5000,
+    "death": "800000",
+    "disabled": "800000",
+    "injured": "400000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "100 per day, max 45 days"
+  },
+
+  {
+    "insurance_company": "60f413816f18c4258cfb6b3b",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 125",
+    "premium": 1900,
+    "death": "600000",
+    "disabled": "600000",
+    "injured": "300000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "50 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413816f18c4258cfb6b3b",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 150",
+    "premium": 2300,
+    "death": "650000",
+    "disabled": "650000",
+    "injured": "300000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "45 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413816f18c4258cfb6b3b",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 250",
+    "premium": 2800,
+    "death": "680000",
+    "disabled": "680000",
+    "injured": "310000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "50 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413816f18c4258cfb6b3b",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 400",
+    "premium": 3200,
+    "death": "700000",
+    "disabled": "700000",
+    "injured": "320000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "50 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413816f18c4258cfb6b3b",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "more than 400",
+    "premium": 6000,
+    "death": "900000",
+    "disabled": "900000",
+    "injured": "400000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "55 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413f0255faa3920007470",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 125",
+    "premium": 2100,
+    "death": "600000",
+    "disabled": "600000",
+    "injured": "300000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "50 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413f0255faa3920007470",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 150",
+    "premium": 2600,
+    "death": "650000",
+    "disabled": "650000",
+    "injured": "310000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "50 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413f0255faa3920007470",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 250",
+    "premium": 3000,
+    "death": "680000",
+    "disabled": "680000",
+    "injured": "350000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "60 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413f0255faa3920007470",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 400",
+    "premium": 4000,
+    "death": "700000",
+    "disabled": "700000",
+    "injured": "380000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "60 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f413f0255faa3920007470",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "more than 400",
+    "premium": 6000,
+    "death": "1000000",
+    "disabled": "1000000",
+    "injured": "600000",
+    "medical_expenses": "As per hospital bills",
+    "attendant_expenses": "100 per day, max 45 days"
+  },
+  {
+    "insurance_company": "60f41402d8a4594a90f05794",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 125",
+    "premium": 1100
+  },
+  {
+    "insurance_company": "60f41402d8a4594a90f05794",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 150",
+    "premium": 1500
+  },
+  {
+    "insurance_company": "60f41402d8a4594a90f05794",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 250",
+    "premium": 2000
+  },
+  {
+    "insurance_company": "60f41402d8a4594a90f05794",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "up to 400",
+    "premium": 2500
+  },
+  {
+    "insurance_company": "60f41402d8a4594a90f05794",
+    "insurance_type": "Third party",
+    "vehicle_type": "bike",
+    "engine_cc": "more than 400",
+    "premium": 4000
+  }
+]

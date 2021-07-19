@@ -147,66 +147,69 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     })
     .sort({ createdAt: -1 });
 
-  console.log(`${fetchLastTaxPaidYear.createdAt}`);
-
   const lastTaxPaidYear = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[3];
   const lastTaxPaidMonth = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[1];
   const lastTaxPaidDay = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[2];
 
   const lastTaxPaidOn = `${lastTaxPaidYear}/${lastTaxPaidMonth}/${lastTaxPaidDay}`;
-  console.log(lastTaxPaidYear);
+
+  const currDate = new Date().getFullYear();
 
   // console.log(`######### => ${fetchTaxpayer}, ${fetchTaxpayer[0]}`);
 
   if (fetchTaxpayer[0] != undefined) {
-    const registeredDate = `${fetchTaxpayer[0].registered_date}`;
-    const registeredMonth = convertMonthNumeric(registeredDate.split(' ')[1]);
-    const registeredDay = registeredDate.split(' ')[2];
-    const registeredYear = registeredDate.split(' ')[3];
-    const type = `${fetchTaxpayer[0].type}`;
-    const cc = `${fetchTaxpayer[0].engine_cc}`;
+    if (currDate > lastTaxPaidYear) {
+      const registeredDate = `${fetchTaxpayer[0].registered_date}`;
+      const registeredMonth = convertMonthNumeric(registeredDate.split(' ')[1]);
+      const registeredDay = registeredDate.split(' ')[2];
+      const registeredYear = registeredDate.split(' ')[3];
+      const type = `${fetchTaxpayer[0].type}`;
+      const cc = `${fetchTaxpayer[0].engine_cc}`;
 
-    // console.log(
-    //   `${registeredYear}, ${registeredMonth}, ${registeredDay}, ${type}, ${cc}`
-    // );
+      // console.log(
+      //   `${registeredYear}, ${registeredMonth}, ${registeredDay}, ${type}, ${cc}`
+      // );
 
-    const taxableRate = calculateTaxRate(type, cc);
+      const taxableRate = calculateTaxRate(type, cc);
 
-    console.log(taxableRate);
+      console.log(taxableRate);
 
-    const taxDetails = calculateTax(
-      registeredMonth,
-      registeredDay,
-      taxableRate,
-      lastTaxPaidYear
-    );
+      const taxDetails = calculateTax(
+        registeredMonth,
+        registeredDay,
+        taxableRate,
+        lastTaxPaidYear
+      );
 
-    const newDate = new Date();
-    const currDate = newDate.getFullYear();
+      const newTaxRecords = new taxRecord({
+        bluebook_number: bluebook_number,
+        paidYear: currDate,
+        paidMonth: registeredMonth,
+        paidDate: registeredDay,
+        taxAmount: `${taxDetails.chargeableTax}`,
+        taxOverdue: `${taxDetails.fineForYears}`,
+        penaltyOnOverdue: `${taxDetails.fine}`,
+        pollutingCharge: 0,
+      });
+      const recordInsertedObj = await newTaxRecords.save();
 
-    const newTaxRecords = new taxRecord({
-      bluebook_number: bluebook_number,
-      paidYear: currDate,
-      paidMonth: registeredMonth,
-      paidDate: registeredDay,
-      taxAmount: `${taxDetails.chargeableTax}`,
-      taxOverdue: `${taxDetails.fineForYears}`,
-      penaltyOnOverdue: `${taxDetails.fine}`,
-      pollutingCharge: 0,
-    });
-    const recordInsertedObj = await newTaxRecords.save();
+      // console.log(fetchTaxpayer[0]);
+      const taxpayerObj = { ...fetchTaxpayer[0] };
+      const taxpayerData = taxpayerObj._doc;
+      const recordInserted = recordInsertedObj._doc;
 
-    // console.log(fetchTaxpayer[0]);
-    const taxpayerObj = { ...fetchTaxpayer[0] };
-    const taxpayerData = taxpayerObj._doc;
-    const recordInserted = recordInsertedObj._doc;
-
-    res.status(200).send({
-      success: true,
-      ...taxpayerData,
-      ...recordInserted,
-      lastTaxPaidOn: lastTaxPaidOn,
-    });
+      res.status(200).send({
+        success: true,
+        ...taxpayerData,
+        ...recordInserted,
+        lastTaxPaidOn: lastTaxPaidOn,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: 'tax-paid',
+      });
+    }
   } else {
     res.status(404).send({
       success: false,

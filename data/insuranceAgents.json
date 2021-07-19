@@ -1,0 +1,26 @@
+[
+  {
+    "insurance_company": "New Insurance Company",
+    "address": "Kalaiya",
+    "contact": "0123456799",
+    "email": "new@insurnace.com"
+  },
+  {
+    "insurance_company": "Motor Insurance Company",
+    "address": "Kalaiya",
+    "contact": "0125653799",
+    "email": "motor@insurnace.com"
+  },
+  {
+    "insurance_company": "Vehicle Insurance Company",
+    "address": "Kalaiya",
+    "contact": "3456799565",
+    "email": "vehicle@insurnace.com"
+  },
+  {
+    "insurance_company": "S&A Insurance Company",
+    "address": "Kalaiya",
+    "contact": "0156686799",
+    "email": "sa@insurnace.com"
+  }
+]
