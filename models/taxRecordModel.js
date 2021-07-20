@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const taxRecordSchema = new mongoose.Schema(
   {
     bluebook_number: { type: String, required: true },
+    policy_number: { type: String, required: true },
     paidYear: { type: Number, required: true },
     paidMonth: { type: Number, required: true },
     paidDate: { type: Number, required: true },
@@ -10,6 +11,7 @@ const taxRecordSchema = new mongoose.Schema(
     taxOverdue: { type: String, required: true },
     penaltyOnOverdue: { type: Number, required: true },
     pollutingCharge: { type: Number, required: true },
+    docs:{type:Array,required:true}
   },
   {
     timestamps: true,

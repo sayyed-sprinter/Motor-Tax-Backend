@@ -183,6 +183,7 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
 
       const newTaxRecords = new taxRecord({
         bluebook_number: bluebook_number,
+        policy_number:policy_number,
         paidYear: currDate,
         paidMonth: registeredMonth,
         paidDate: registeredDay,
@@ -190,9 +191,12 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
         taxOverdue: `${taxDetails.fineForYears}`,
         penaltyOnOverdue: `${taxDetails.fine}`,
         pollutingCharge: 0,
+        docs:[{bluebook_file_path,
+          citizenship_file_path,
+          policy_file_path}]
       });
       const recordInsertedObj = await newTaxRecords.save();
-
+      console.log(recordInsertedObj)
       // console.log(fetchTaxpayer[0]);
       const taxpayerObj = { ...fetchTaxpayer[0] };
       const taxpayerData = taxpayerObj._doc;
@@ -219,6 +223,25 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
   }
 });
 
-router.route('/').post(fetchTaxpayerDetails);
+
+
+const allTaxRecordDoc = asyncHandler(async (req, res) => {
+  const allTaxRecordDocs = await taxRecord.find();
+
+  try {
+    res
+      .status(200)
+      .send({ success: true, allTaxRecordDocs: allTaxRecordDocs });
+  } catch (err) {
+    console.log(`Error occured in /api/taxpayer/ get request: ${err}`);
+    res.status(404).send({ success: false, message: err });
+  }
+});
+
+
+
+router.route('/').post(fetchTaxpayerDetails)
 
 module.exports = router;
+
+// update 
