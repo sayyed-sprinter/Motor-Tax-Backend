@@ -224,7 +224,6 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
 });
 
 
-
 const allTaxRecordDoc = asyncHandler(async (req, res) => {
   const allTaxRecordDocs = await taxRecord.find();
 
@@ -238,10 +237,8 @@ const allTaxRecordDoc = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-router.route('/').post(fetchTaxpayerDetails)
+router.route('/').post(fetchTaxpayerDetails).get(allTaxRecordDoc);
 
 module.exports = router;
 
-// update 
+//update functionality
