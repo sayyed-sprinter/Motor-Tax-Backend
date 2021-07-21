@@ -223,7 +223,7 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
   }
 });
 
-
+// for taxpayer docs
 const allTaxRecordDoc = asyncHandler(async (req, res) => {
   const allTaxRecordDocs = await taxRecord.find();
 
@@ -237,8 +237,11 @@ const allTaxRecordDoc = asyncHandler(async (req, res) => {
   }
 });
 
-router.route('/').post(fetchTaxpayerDetails).get(allTaxRecordDoc);
+
+//to update tax payer document varification information
+
+
+router.route('/').post(fetchTaxpayerDetails).get(allTaxRecordDoc)
 
 module.exports = router;
 
-//update functionality

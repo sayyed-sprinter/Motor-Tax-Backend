@@ -52,3 +52,17 @@ describe('GET insuranceagent info', () => {
     expect(response.body.success).toEqual(true);
   });
 });
+
+
+
+
+//kkjsdkjksdj
+describe('GET taxpayer documents', () => {
+  jest.setTimeout(30000);
+  test('It should fetch textpayer documents and return documents ', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/taxpayer');
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});

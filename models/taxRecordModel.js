@@ -11,7 +11,8 @@ const taxRecordSchema = new mongoose.Schema(
     taxOverdue: { type: String, required: true },
     penaltyOnOverdue: { type: Number, required: true },
     pollutingCharge: { type: Number, required: true },
-    docs:{type:Array,required:true}
+    docs:{type:Array,required:true},
+    verified:{type:Boolean,required:true, default:false}
   },
   {
     timestamps: true,
