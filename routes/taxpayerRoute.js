@@ -162,7 +162,7 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
       const registeredDate = `${fetchTaxpayer[0].registered_date}`;
       const registeredMonth = convertMonthNumeric(registeredDate.split(' ')[1]);
       const registeredDay = registeredDate.split(' ')[2];
-      const registeredYear = registeredDate.split(' ')[3];
+      const taxpayer_name = fetchTaxpayer[0].taxpayer_name;
       const type = `${fetchTaxpayer[0].type}`;
       const cc = `${fetchTaxpayer[0].engine_cc}`;
 
@@ -182,8 +182,9 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
       );
 
       const newTaxRecords = new taxRecord({
+        taxpayer: taxpayer_name,
         bluebook_number: bluebook_number,
-        policy_number:policy_number,
+        policy_number: policy_number,
         paidYear: currDate,
         paidMonth: registeredMonth,
         paidDate: registeredDay,
@@ -191,12 +192,10 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
         taxOverdue: `${taxDetails.fineForYears}`,
         penaltyOnOverdue: `${taxDetails.fine}`,
         pollutingCharge: 0,
-        docs:[{bluebook_file_path,
-          citizenship_file_path,
-          policy_file_path}]
+        docs: [{ bluebook_file_path, citizenship_file_path, policy_file_path }],
       });
       const recordInsertedObj = await newTaxRecords.save();
-      console.log(recordInsertedObj)
+      console.log(recordInsertedObj);
       // console.log(fetchTaxpayer[0]);
       const taxpayerObj = { ...fetchTaxpayer[0] };
       const taxpayerData = taxpayerObj._doc;
@@ -228,34 +227,41 @@ const allTaxRecordDoc = asyncHandler(async (req, res) => {
   const allTaxRecordDocs = await taxRecord.find();
 
   try {
-    res
-      .status(200)
-      .send({ success: true, allTaxRecordDocs: allTaxRecordDocs });
+    res.status(200).send({ success: true, allTaxRecordDocs: allTaxRecordDocs });
   } catch (err) {
     console.log(`Error occured in /api/taxpayer/ get request: ${err}`);
     res.status(404).send({ success: false, message: err });
   }
 });
 
-
 //to update tax payer document varification information
 const taxPayerDocsVarification = asyncHandler(async (req, res) => {
-  const verified=req.body.verified;
-  const id=req.body.id;
+  const verified = req.body.verified;
+  const id = req.body.id;
 
-  const verifyTaxPayerDocs= await taxRecord.updateOne({_id:id},{
-       $set:{
-        verified:verified
-      }   
-    })
+  const verifyTaxPayerDocs = await taxRecord
+    .updateOne(
+      { _id: id },
+      {
+        $set: {
+          verified: verified,
+        },
+      }
+    )
     .then((result) => {
-        res.status(200).json({message: "Updated taxpayer document varification information"})
-    }).catch((err) => {
-        res.status(500).json({error: err})
+      res.status(200).json({
+        message: 'Updated taxpayer document varification information',
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
     });
 });
 
-router.route('/').post(fetchTaxpayerDetails).get(allTaxRecordDoc).put(taxPayerDocsVarification)
+router
+  .route('/')
+  .post(fetchTaxpayerDetails)
+  .get(allTaxRecordDoc)
+  .put(taxPayerDocsVarification);
 
 module.exports = router;
-

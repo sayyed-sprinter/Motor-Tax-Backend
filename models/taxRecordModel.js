@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const taxRecordSchema = new mongoose.Schema(
   {
+    taxpayer: { type: String, required: true, default: 'Anonymous' },
     bluebook_number: { type: String, required: true },
     policy_number: { type: String, required: true },
     paidYear: { type: Number, required: true },
@@ -11,8 +12,8 @@ const taxRecordSchema = new mongoose.Schema(
     taxOverdue: { type: String, required: true },
     penaltyOnOverdue: { type: Number, required: true },
     pollutingCharge: { type: Number, required: true },
-    docs:{type:Array,required:true},
-    verified:{type:Boolean,required:true, default:false}
+    docs: { type: Array, required: true },
+    verified: { type: Boolean, required: true, default: false },
   },
   {
     timestamps: true,
