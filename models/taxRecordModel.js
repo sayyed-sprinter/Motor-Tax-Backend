@@ -14,6 +14,7 @@ const taxRecordSchema = new mongoose.Schema(
     pollutingCharge: { type: Number, required: true },
     docs: { type: Array, required: true },
     verified: { type: Boolean, required: true, default: false },
+    adminComment: { type: String, default: '' },
   },
   {
     timestamps: true,

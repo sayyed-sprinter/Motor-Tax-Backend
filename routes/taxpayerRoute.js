@@ -234,34 +234,25 @@ const allTaxRecordDoc = asyncHandler(async (req, res) => {
   }
 });
 
-//to update tax payer document varification information
-const taxPayerDocsVarification = asyncHandler(async (req, res) => {
-  const verified = req.body.verified;
-  const id = req.body.id;
+//to update tax payer document verification information
+const updateTaxpayer = asyncHandler(async (req, res) => {
+  const taxpayer = await taxRecord.findById(req.params.id);
 
-  const verifyTaxPayerDocs = await taxRecord
-    .updateOne(
-      { _id: id },
-      {
-        $set: {
-          verified: verified,
-        },
-      }
-    )
-    .then((result) => {
-      res.status(200).json({
-        message: 'Updated taxpayer document varification information',
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
+  if (taxpayer) {
+    taxpayer.verified = req.body.verified || false;
+    taxpayer.adminComment = req.body.adminComment || '';
+    const updatedTaxpayer = await taxpayer.save();
+    res.status(200).send({
+      success: true,
+      message: 'Taxpayer documents verified!',
+      updatedTaxpayer: updatedTaxpayer,
     });
+  } else {
+    res.status(200).send({ success: true, message: 'Record not found' });
+  }
 });
 
-router
-  .route('/')
-  .post(fetchTaxpayerDetails)
-  .get(allTaxRecordDoc)
-  .put(taxPayerDocsVarification);
+router.route('/').post(fetchTaxpayerDetails).get(allTaxRecordDoc);
+router.route('/:id').put(updateTaxpayer);
 
 module.exports = router;
