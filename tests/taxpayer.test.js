@@ -55,8 +55,6 @@ describe('GET insuranceagent info', () => {
   });
 });
 
-
-
 describe('GET taxpayer documents', () => {
   jest.setTimeout(30000);
   test('It should fetch textpayer documents and return documents ', async () => {
@@ -66,10 +64,6 @@ describe('GET taxpayer documents', () => {
     expect(response.body.success).toEqual(true);
   });
 });
-
-
-
-
 
 describe('GET tax details', () => {
   jest.setTimeout(30000);

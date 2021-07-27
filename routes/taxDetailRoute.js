@@ -17,10 +17,9 @@ const router = express.Router();
 // });
 
 const fetchTaxDetail = asyncHandler(async (req, res) => {
-  const taxDetail = await TaxDetail.find();
+  const taxRates = await taxRates.find();
   try {
-    console.log(taxDetail);
-    res.status(200).send({ success: true, taxDetail: taxDetail });
+    res.status(200).send({ success: true, taxRates: taxRates });
   } catch (err) {
     console.log(`Error occured in /api/tax-details/ get request: ${err}`);
     res.status(404).send({ success: false, message: err });

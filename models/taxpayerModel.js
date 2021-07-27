@@ -10,7 +10,6 @@ const taxpayerSchema = new mongoose.Schema(
     type: { type: String, required: true },
     engine_cc: { type: Number, required: true },
     registered_date: { type: Date, required: true },
-    
   },
   {
     timestamps: true,
