@@ -13,6 +13,7 @@ const uploadRoute = require('./routes/uploadRoute');
 const insuranceAgentsRoutes = require('./routes/insuranceAgentsRoute');
 const insuranceReportRoute = require('./routes/insuranceReportRoute');
 const taxPayerDocsVarificationRoute = require('./routes/taxpayerRoute');
+const taxDetailRoute = require('./routes/taxDetailRoute');
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use('/api/uploads', uploadRoute);
 app.use('/api/insurance-agents', insuranceAgentsRoutes);
 app.use('/api/insurance-report',insuranceReportRoute);
 app.use('/api/taxpayer/docs-varification',taxPayerDocsVarificationRoute)
+app.use('/api/tax-details',taxDetailRoute)
 
 app.get('/', (req, res) => {
   res.send('API is running');

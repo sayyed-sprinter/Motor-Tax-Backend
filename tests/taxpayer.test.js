@@ -2,7 +2,7 @@
 const request = require('supertest');
 // we also need our app for the correct routes!
 const app = require('../index');
-
+/*
 describe('POST taxpayer info', () => {
   jest.setTimeout(30000);
   test('It should post taxpayer details and return tax details', async () => {
@@ -22,6 +22,8 @@ describe('POST taxpayer info', () => {
   });
 });
 
+
+*/
 describe('POST taxpayer info', () => {
   jest.setTimeout(30000);
 
@@ -55,13 +57,25 @@ describe('GET insuranceagent info', () => {
 
 
 
-
-//kkjsdkjksdj
 describe('GET taxpayer documents', () => {
   jest.setTimeout(30000);
   test('It should fetch textpayer documents and return documents ', async () => {
     jest.setTimeout(50000);
     const response = await request(app).get('/api/taxpayer');
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
+
+
+
+
+describe('GET tax details', () => {
+  jest.setTimeout(30000);
+  test('It should fetch tax details  based on engine CC and type', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/tax-details');
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
