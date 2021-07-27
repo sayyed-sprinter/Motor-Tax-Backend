@@ -1,0 +1,56 @@
+[
+  {
+    "type": "car",
+    "tax_rates": [
+      {
+        "engine_cc": "up to 1000",
+        "rate": 21000
+      },
+      {
+        "engine_cc": "1000 - 1500",
+        "rate": 23000
+      },
+      {
+        "engine_cc": "1500 - 2000",
+        "rate": 25000
+      },
+      {
+        "engine_cc": "2000 - 2500",
+        "rate": 38000
+      },
+      {
+        "engine_cc": "2500 - 2900",
+        "rate": 45000
+      },
+      {
+        "engine_cc": "more than 2900",
+        "rate": 65000
+      }
+    ]
+  },
+  {
+    "type": "bike",
+    "tax_rates": [
+      {
+        "engine_cc": "up to 125",
+        "rate": 2500
+      },
+      {
+        "engine_cc": "125 - 150",
+        "rate": 4000
+      },
+      {
+        "engine_cc": "150 - 250",
+        "rate": 8000
+      },
+      {
+        "engine_cc": "250 - 400",
+        "rate": 16000
+      },
+      {
+        "engine_cc": "more than 400",
+        "rate": 30000
+      }
+    ]
+  }
+]
