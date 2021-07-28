@@ -17,7 +17,7 @@ const router = express.Router();
 // });
 
 const fetchTaxDetail = asyncHandler(async (req, res) => {
-  const taxRates = await taxRates.find();
+  const taxRates = await TaxDetail.find();
   try {
     res.status(200).send({ success: true, taxRates: taxRates });
   } catch (err) {
