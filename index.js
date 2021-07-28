@@ -14,8 +14,9 @@ const insuranceAgentsRoutes = require('./routes/insuranceAgentsRoute');
 const insuranceReportRoute = require('./routes/insuranceReportRoute');
 const taxDetailRoute = require('./routes/taxDetailRoute');
 
-dotenv.config();
 
+dotenv.config();
+  
 connectDb();
 
 let PORT = process.env.PORT || 3000;
