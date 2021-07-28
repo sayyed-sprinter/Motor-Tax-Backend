@@ -21,7 +21,7 @@ const FAQs = asyncHandler(async (req, res) => {
         const faqsInserted = await faqs.save();
         res.status(200).
             send({ success: true, faqsInserted });
-   
+
 })
 
 router.route('/').post(FAQs)
