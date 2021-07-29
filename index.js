@@ -13,10 +13,10 @@ const uploadRoute = require('./routes/uploadRoute');
 const insuranceAgentsRoutes = require('./routes/insuranceAgentsRoute');
 const insuranceReportRoute = require('./routes/insuranceReportRoute');
 const taxDetailRoute = require('./routes/taxDetailRoute');
-const faqRoute = require('./routes/faqRoute');
+const faqsRoute = require('./routes/faqsRoute');
 
 dotenv.config();
-  
+
 connectDb();
 
 let PORT = process.env.PORT || 3000;
@@ -34,7 +34,7 @@ app.use('/api/uploads', uploadRoute);
 app.use('/api/insurance-agents', insuranceAgentsRoutes);
 app.use('/api/insurance-report', insuranceReportRoute);
 app.use('/api/tax-details', taxDetailRoute);
-app.use('/api/tax-faq',faqRoute);
+app.use('/api/faqs', faqsRoute);
 
 app.get('/', (req, res) => {
   res.send('API is running');
