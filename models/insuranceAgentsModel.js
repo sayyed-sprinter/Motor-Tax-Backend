@@ -6,7 +6,10 @@ const insuranceAgentsSchema = new mongoose.Schema(
     address: { type: String, required: true },
     contact: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-  },
+    license_number:{ type: String, required: true, unique: true },
+    vat_number:{ type: String, required: true, unique: true },
+    docs: { type: Array, required: true }
+    },
   {
     timestamps: true,
   }
