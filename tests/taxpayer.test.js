@@ -85,5 +85,24 @@ describe('GET frequently asked questions and answers', () => {
   });
 });
 
+//test for insurance agents
+describe('POST Insurance agents', () => {
+  jest.setTimeout(30000);
 
+  test('It should post insurance agents ', async () => {
+    const stateObj = {
+    insurance_company:"zzz",
+    license_number:"111111",
+    vat_number:"2222",
+    vat_file_path:"sds",
+    license_file_path:"fgf"
+    };
+    jest.setTimeout(50000);
+    const response = await request(app)
+      .post('/api/insurance-agents')
+      .send(stateObj);
+    jest.setTimeout(100000);
+     expect(response.body.success).toEqual(true);
+  });
+});
 
