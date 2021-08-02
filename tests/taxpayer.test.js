@@ -86,16 +86,19 @@ describe('GET frequently asked questions and answers', () => {
 });
 
 //test for insurance agents
-describe('POST Insurance agents', () => {
+describe('POST insurance agents information', () => {
   jest.setTimeout(30000);
-
-  test('It should post insurance agents ', async () => {
+ 
+  test('It should post insurance agents details', async () => {
     const stateObj = {
-    insurance_company:"zzz",
-    license_number:"111111",
-    vat_number:"2222",
-    vat_file_path:"sds",
-    license_file_path:"fgf"
+      insurance_company:"InsuranceArena",
+      license_number:"84630",
+      vat_number:"74027",
+      vat_file_path:"D drive ",
+      license_file_path:"D drive",
+      address:"Nepal",
+      contact:"977 873873874",
+      email:"InsuranceArena@gmail.com"
     };
     jest.setTimeout(50000);
     const response = await request(app)
