@@ -66,6 +66,6 @@ const latestInsuranceAgents = asyncHandler(async (req, res) => {
 });
 
 router.route('/').get(allInsuranceAgents).post(addInsuranceAgents);
-route.route('/latest').get(latestInsuranceAgents);
+router.route('/latest').get(latestInsuranceAgents);
 
 module.exports = router;
