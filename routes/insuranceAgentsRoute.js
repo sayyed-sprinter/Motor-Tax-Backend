@@ -40,18 +40,20 @@ const addInsuranceAgents = asyncHandler(async (req, res) => {
     docs: [{ vat_file_path, license_file_path }],
   });
 
-  const InsertedInsuranceAgent = await insuranceagent.save();
+  const insertedInsuranceAgent = await insuranceagent.save();
 
   try {
-    res.status(200).send({ success: true, InsertedInsuranceAgent });
+    res.status(200).send({ success: true, insertedInsuranceAgent });
   } catch (error) {
     res.status(503).send({ success: false, message: 'Service Unavailable' });
   }
 });
 
-
-const  latestInsuranceAgents = asyncHandler(async (req, res) => {
-  const latestInsuranceAgents = await insuranceagents.find().limit(14).sort({createdAt:1});
+const latestInsuranceAgents = asyncHandler(async (req, res) => {
+  const latestInsuranceAgents = await insuranceagents
+    .find()
+    .limit(14)
+    .sort({ createdAt: 1 });
 
   try {
     res
@@ -63,10 +65,7 @@ const  latestInsuranceAgents = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 router.route('/').get(allInsuranceAgents).post(addInsuranceAgents);
-route.route('/latest').get(latestInsuranceAgents)
-
+route.route('/latest').get(latestInsuranceAgents);
 
 module.exports = router;
