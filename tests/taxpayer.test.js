@@ -85,5 +85,27 @@ describe('GET frequently asked questions and answers', () => {
   });
 });
 
-
+//test for insurance agents
+describe('POST insurance agents information', () => {
+  jest.setTimeout(30000);
+ 
+  test('It should post insurance agents details', async () => {
+    const stateObj = {
+      insurance_company:"InsuranceArena",
+      license_number:"84630",
+      vat_number:"74027",
+      vat_file_path:"D drive ",
+      license_file_path:"D drive",
+      address:"Nepal",
+      contact:"977 873873874",
+      email:"InsuranceArena@gmail.com"
+    };
+    jest.setTimeout(50000);
+    const response = await request(app)
+      .post('/api/insurance-agents')
+      .send(stateObj);
+    jest.setTimeout(100000);
+     expect(response.body.success).toEqual(true);
+  });
+});
 
