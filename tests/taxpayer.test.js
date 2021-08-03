@@ -119,3 +119,14 @@ describe('GET latest insurance agent information', () => {
     expect(response.body.success).toEqual(true);
   });
 });
+
+
+describe('GET insurance agent documents', () => {
+  jest.setTimeout(30000);
+  test('It should fetch insurance agent documents', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/insurance-agents');
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
