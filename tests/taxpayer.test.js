@@ -21,9 +21,9 @@ describe('POST taxpayer info', () => {
     expect(response.body.success).toEqual(true);
   });
 });
-
-
 */
+
+
 describe('POST taxpayer info', () => {
   jest.setTimeout(30000);
 
@@ -65,6 +65,22 @@ describe('GET taxpayer documents', () => {
   });
 });
 
+
+//testing for document verification
+describe('Update taxpayer verification information ', () => {
+  const updateInfo = {
+      verified:true,
+     // id:"60f825d146a4d32c90a8e70a"
+  };
+  jest.setTimeout(30000);
+  test('It should Update taxpayer verification information  ', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).put('/api/taxpayer/',610a675eea2ce915be178e22).send(updatetaxpayerInfo);
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
 describe('GET tax details', () => {
   jest.setTimeout(30000);
   test('It should fetch tax details  based on engine CC and type', async () => {
@@ -84,7 +100,6 @@ describe('GET frequently asked questions and answers', () => {
     expect(response.body.success).toEqual(true);
   });
 });
-
 /*
 //test for insurance agents
 describe('POST insurance agents information', () => {
@@ -110,8 +125,6 @@ describe('POST insurance agents information', () => {
   });
 });
 */
-
-
 describe('GET insurance agent documents', () => {
   jest.setTimeout(30000);
   test('It should fetch insurance agent documents', async () => {
@@ -132,3 +145,17 @@ describe('GET latest insurance agent information', () => {
     expect(response.body.success).toEqual(true);
   });
 });
+
+describe('Update insurance agent verification information ', () => {
+  const updateInsuranceAgentInfo = {
+    verified:true,
+    adminComment:"valid insurance agent",
+   };
+   jest.setTimeout(30000);
+   test('It should Update taxpayer verification information ', async () => {
+   jest.setTimeout(50000);
+  const response = await request(app).put('/api/taxpayer/',610a675eea2ce915be178e22).send(updateInsuranceAgentInfo);
+   jest.setTimeout(100000);
+   expect(response.body.success).toEqual(true);
+   });
+  })
