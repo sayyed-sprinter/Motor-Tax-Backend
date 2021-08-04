@@ -9,6 +9,8 @@ const insuranceAgentsSchema = new mongoose.Schema(
     license_number: { type: String, required: true, unique: true },
     vat_number: { type: String, required: true, unique: true },
     docs: { type: Array, required: true },
+    verified: { type: Boolean, required: true, default: false },
+    adminComment: { type: String, default: '' },
   },
   {
     timestamps: true,

@@ -85,6 +85,7 @@ describe('GET frequently asked questions and answers', () => {
   });
 });
 
+/*
 //test for insurance agents
 describe('POST insurance agents information', () => {
   jest.setTimeout(30000);
@@ -108,4 +109,26 @@ describe('POST insurance agents information', () => {
      expect(response.body.success).toEqual(true);
   });
 });
+*/
 
+
+describe('GET insurance agent documents', () => {
+  jest.setTimeout(30000);
+  test('It should fetch insurance agent documents', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/insurance-agents');
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
+
+describe('GET latest insurance agent information', () => {
+  jest.setTimeout(30000);
+  test('It should fetch latest insurance agent information', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/insurance-agents/latest');
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
