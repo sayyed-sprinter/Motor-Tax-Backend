@@ -66,8 +66,28 @@ const latestInsuranceAgents = asyncHandler(async (req, res) => {
 });
 
 
+//to update insurance agent document verification information
+const updateInsuranceAgent = asyncHandler(async (req, res) => {
+  const insuranceagent = await insuranceagents.findById(req.params.id);
+  console.log(insuranceagent)
+  if (insuranceagent) {
+   
+    insuranceagent.verified = req.body.verified || false;
+    insuranceagent.adminComment = req.body.adminComment || '';
+    const updatedinsuranceagent = await insuranceagent.save();
+    res.status(200).send({
+      success: true,
+      message: 'insurance agent documents verified!',
+      updatedinsuranceagent: updatedinsuranceagent,
+    });
+  } else {
+    res.status(200).send({ success: false, message: 'Record not found' });
+  }
+});
+
 
 router.route('/').get(allInsuranceAgents).post(addInsuranceAgents);
 router.route('/latest').get(latestInsuranceAgents);
+router.route('/:id').put(updateInsuranceAgent);
 
 module.exports = router;
