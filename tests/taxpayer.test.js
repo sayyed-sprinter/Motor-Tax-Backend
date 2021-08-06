@@ -2,7 +2,7 @@
 const request = require('supertest');
 // we also need our app for the correct routes!
 const app = require('../index');
-/*
+
 describe('POST taxpayer info', () => {
   jest.setTimeout(30000);
   test('It should post taxpayer details and return tax details', async () => {
@@ -21,8 +21,6 @@ describe('POST taxpayer info', () => {
     expect(response.body.success).toEqual(true);
   });
 });
-*/
-
 
 describe('POST taxpayer info', () => {
   jest.setTimeout(30000);
@@ -65,17 +63,18 @@ describe('GET taxpayer documents', () => {
   });
 });
 
-
 //testing for document verification
 describe('Update taxpayer verification information ', () => {
   const updateInfo = {
-      verified:true,
-     // id:"60f825d146a4d32c90a8e70a"
+    verified: true,
+    // id:"60f825d146a4d32c90a8e70a"
   };
   jest.setTimeout(30000);
   test('It should Update taxpayer verification information  ', async () => {
     jest.setTimeout(50000);
-    const response = await request(app).put('/api/taxpayer/',610a675eea2ce915be178e22).send(updatetaxpayerInfo);
+    const response = await request(app)
+      .put('/api/taxpayer/610a675eea2ce915be178e22')
+      .send(updatetaxpayerInfo);
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
@@ -94,37 +93,37 @@ describe('GET tax details', () => {
 describe('GET frequently asked questions and answers', () => {
   jest.setTimeout(30000);
   test('It should fetch frequently asked questions and answers', async () => {
-    jest.setTimeout(50000);         
+    jest.setTimeout(50000);
     const response = await request(app).get('/api/tax-faq');
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
 });
-/*
+
 //test for insurance agents
 describe('POST insurance agents information', () => {
   jest.setTimeout(30000);
- 
+
   test('It should post insurance agents details', async () => {
     const stateObj = {
-      insurance_company:"InsuranceArena",
-      license_number:"84630",
-      vat_number:"74027",
-      vat_file_path:"D drive ",
-      license_file_path:"D drive",
-      address:"Nepal",
-      contact:"977 873873874",
-      email:"InsuranceArena@gmail.com"
+      insurance_company: 'InsuranceArena',
+      license_number: '84630',
+      vat_number: '74027',
+      vat_file_path: 'D drive ',
+      license_file_path: 'D drive',
+      address: 'Nepal',
+      contact: '977 873873874',
+      email: 'InsuranceArena@gmail.com',
     };
     jest.setTimeout(50000);
     const response = await request(app)
       .post('/api/insurance-agents')
       .send(stateObj);
     jest.setTimeout(100000);
-     expect(response.body.success).toEqual(true);
+    expect(response.body.success).toEqual(true);
   });
 });
-*/
+
 describe('GET insurance agent documents', () => {
   jest.setTimeout(30000);
   test('It should fetch insurance agent documents', async () => {
@@ -134,7 +133,6 @@ describe('GET insurance agent documents', () => {
     expect(response.body.success).toEqual(true);
   });
 });
-
 
 describe('GET latest insurance agent information', () => {
   jest.setTimeout(30000);
@@ -148,14 +146,16 @@ describe('GET latest insurance agent information', () => {
 
 describe('Update insurance agent verification information ', () => {
   const updateInsuranceAgentInfo = {
-    verified:true,
-    adminComment:"valid insurance agent",
-   };
-   jest.setTimeout(30000);
-   test('It should Update taxpayer verification information ', async () => {
-   jest.setTimeout(50000);
-  const response = await request(app).put('/api/taxpayer/',610a675eea2ce915be178e22).send(updateInsuranceAgentInfo);
-   jest.setTimeout(100000);
-   expect(response.body.success).toEqual(true);
-   });
-  })
+    verified: true,
+    adminComment: 'valid insurance agent',
+  };
+  jest.setTimeout(30000);
+  test('It should Update taxpayer verification information ', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app)
+      .put('/api/taxpayer/610a675eea2ce915be178e22')
+      .send(updateInsuranceAgentInfo);
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
