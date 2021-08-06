@@ -27,10 +27,10 @@ describe('POST taxpayer info', () => {
 
   test('It should post taxpayer details and return insurance policy and amount details', async () => {
     const stateObj = {
-      bluebook_number: '5',
-      vehicle_number: '5555',
+      bluebook_number: '6',
+      vehicle_number: '6666',
       insurance_company: 'ABC',
-      engine_cc: 350,
+      engine_cc: 600,
       bluebook_file_path: '/bluebook_file_path',
       citizenship_file_path: '/citizenship_file_path',
     };
@@ -38,8 +38,9 @@ describe('POST taxpayer info', () => {
     const response = await request(app)
       .post('/api/insurance-report/')
       .send(stateObj);
+
     jest.setTimeout(100000);
-    //  expect(response.body.success).toEqual(true);
+    expect(response.body.success).toEqual(true);
   });
 });
 
@@ -67,14 +68,15 @@ describe('GET taxpayer documents', () => {
 describe('Update taxpayer verification information ', () => {
   const updateInfo = {
     verified: true,
-    // id:"60f825d146a4d32c90a8e70a"
   };
   jest.setTimeout(30000);
   test('It should Update taxpayer verification information  ', async () => {
     jest.setTimeout(50000);
-    const response = await request(app)
-      .put('/api/taxpayer/610a675eea2ce915be178e22')
-      .send(updatetaxpayerInfo);
+    const response = await request(app).put(
+      '/api/taxpayer/610a675eea2ce915be178e22',
+      updateInfo
+    );
+
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
@@ -94,7 +96,7 @@ describe('GET frequently asked questions and answers', () => {
   jest.setTimeout(30000);
   test('It should fetch frequently asked questions and answers', async () => {
     jest.setTimeout(50000);
-    const response = await request(app).get('/api/tax-faq');
+    const response = await request(app).get('/api/faqs');
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
@@ -119,6 +121,7 @@ describe('POST insurance agents information', () => {
     const response = await request(app)
       .post('/api/insurance-agents')
       .send(stateObj);
+
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
@@ -146,15 +149,16 @@ describe('GET latest insurance agent information', () => {
 
 describe('Update insurance agent verification information ', () => {
   const updateInsuranceAgentInfo = {
-    verified: true,
-    adminComment: 'valid insurance agent',
+    verified: false,
+    adminComment: 'Invalid documents!!',
   };
   jest.setTimeout(30000);
   test('It should Update taxpayer verification information ', async () => {
     jest.setTimeout(50000);
-    const response = await request(app)
-      .put('/api/taxpayer/610a675eea2ce915be178e22')
-      .send(updateInsuranceAgentInfo);
+    const response = await request(app).put(
+      '/api/taxpayer/610a675eea2ce915be178e22',
+      updateInsuranceAgentInfo
+    );
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
