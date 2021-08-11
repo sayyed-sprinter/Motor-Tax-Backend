@@ -252,7 +252,58 @@ const updateTaxpayer = asyncHandler(async (req, res) => {
   }
 });
 
+const createTaxpayerAccount = asyncHandler(async (req, res) => {
+  const {
+    taxpayer_name,
+    bluebook_number,
+    vehicle_number,
+    province,
+    lot,
+    type,
+    engine_cc,
+    registered_date,
+    contact,
+    email,
+    username,
+    password,
+  } = req.body;
+
+  const taxpayerSignupDetails = new Taxpayer({
+    taxpayer_name,
+    bluebook_number,
+    vehicle_number,
+    province,
+    lot,
+    type,
+    engine_cc,
+    registered_date,
+    contact,
+    email,
+    username,
+    password,
+  });
+
+  const taxpayerCreated = await taxpayerSignupDetails.save();
+  res.status(200).send({ success: true, taxpayerCreated });
+});
+
+const loginAuthentication = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const taxpayer = await Taxpayer.findOne({ $and: [{ email }, { password }] });
+
+  if (taxpayer) {
+    res.status(200).send({ success: true, taxpayer });
+  } else {
+    res
+      .status(200)
+      .send({ success: false, message: 'Invalid email or password!' });
+  }
+});
+
 router.route('/').post(fetchTaxpayerDetails).get(allTaxRecordDoc);
 router.route('/:id').put(updateTaxpayer);
+router.route('/signup').post(createTaxpayerAccount);
+router.route('/login').post(loginAuthentication);
 
 module.exports = router;
