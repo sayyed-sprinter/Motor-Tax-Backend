@@ -1,6 +1,6 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const admin = require('../models/AdminModel');
+const admin = require('../models/adminModel');
 
 const router = express.Router();
 
