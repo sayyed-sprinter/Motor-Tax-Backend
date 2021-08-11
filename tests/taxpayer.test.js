@@ -196,3 +196,18 @@ describe('POST user information', () => {
   });
 });
 
+
+//View Profile
+describe('GET user profile ', () => {
+  jest.setTimeout(30000);
+  test('It should fetch user information by id', async () => {
+ 
+    jest.setTimeout(50000);
+    const response = await request(app).get(
+      '/api/taxpayer/6113bb98824439001522913b'
+    );
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
