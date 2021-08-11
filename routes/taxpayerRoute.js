@@ -257,6 +257,9 @@ const createTaxpayerAccount = asyncHandler(async (req, res) => {
     taxpayer_name,
     bluebook_number,
     vehicle_number,
+    policy_number,
+    lastTaxPaidDate,
+    taxAmount,
     province,
     lot,
     type,
@@ -266,7 +269,12 @@ const createTaxpayerAccount = asyncHandler(async (req, res) => {
     email,
     username,
     password,
+    bluebook_file_path,
+    citizenship_file_path,
+    policy_file_path,
   } = req.body;
+
+  console.log(lastTaxPaidDate);
 
   const taxpayerSignupDetails = new Taxpayer({
     taxpayer_name,
@@ -283,8 +291,25 @@ const createTaxpayerAccount = asyncHandler(async (req, res) => {
     password,
   });
 
+  const taxpayerRecordWithSignupDetails = new taxRecord({
+    taxpayer: taxpayer_name,
+    bluebook_number,
+    policy_number,
+    paidYear: `${lastTaxPaidDate.split('-')[0]}`,
+    paidMonth: `${lastTaxPaidDate.split('-')[1]}`,
+    paidDate: `${lastTaxPaidDate.split('-')[2]}`,
+    taxAmount,
+    taxOverdue: '0',
+    penaltyOnOverdue: 0,
+    pollutingCharge: 0,
+    docs: [{ bluebook_file_path, citizenship_file_path, policy_file_path }],
+  });
+
   const taxpayerCreated = await taxpayerSignupDetails.save();
-  res.status(200).send({ success: true, taxpayerCreated });
+  const taxpayerRecordCreated = await taxpayerRecordWithSignupDetails.save();
+  res
+    .status(200)
+    .send({ success: true, taxpayerCreated, taxpayerRecordCreated });
 });
 
 const loginAuthentication = asyncHandler(async (req, res) => {
