@@ -163,3 +163,36 @@ describe('Update insurance agent verification information ', () => {
     expect(response.body.success).toEqual(true);
   });
 });
+
+
+
+
+//Create Profile
+describe('POST user information', () => {
+  jest.setTimeout(30000);
+
+  test('It should post user details', async () => {
+    const userInfo = {
+         taxpayer_name: "Amit Bhandari",
+         bluebook_number: "5464",
+         vehicle_number: "54648",
+         province:"Province No 2",
+         lot:"30",
+         type:"Car",
+         engine_cc:"600",
+         registered_date:"2021",
+         contact:"9807483648",
+         email:"amit@gmail.com",
+         username:"amit",
+         password:"9999n"
+    };
+    jest.setTimeout(50000);
+    const response = await request(app)
+      .post('/api/taxpayer/signup/')
+      .send(userInfo);
+
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
