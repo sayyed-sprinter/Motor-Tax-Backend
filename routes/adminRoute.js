@@ -29,7 +29,7 @@ const loginAuthentication = asyncHandler(async (req, res) => {
     res.status(200).send({ success: true, adminUser });
   } else {
     res
-      .status(200)
+      .status(404)
       .send({ success: false, message: 'Invalid email or password!' });
   }
 });

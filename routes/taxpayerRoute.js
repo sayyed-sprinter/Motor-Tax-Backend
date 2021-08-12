@@ -274,8 +274,6 @@ const createTaxpayerAccount = asyncHandler(async (req, res) => {
     policy_file_path,
   } = req.body;
 
-  console.log(lastTaxPaidDate);
-
   const taxpayerSignupDetails = new Taxpayer({
     taxpayer_name,
     bluebook_number,
@@ -321,7 +319,7 @@ const loginAuthentication = asyncHandler(async (req, res) => {
     res.status(200).send({ success: true, taxpayer });
   } else {
     res
-      .status(200)
+      .status(404)
       .send({ success: false, message: 'Invalid email or password!' });
   }
 });
