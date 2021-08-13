@@ -324,8 +324,22 @@ const loginAuthentication = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteTaxpayer = asyncHandler(async (req, res) => {
+  const taxpayer = await Taxpayer.findById(req.params.id);
+
+  if (taxpayer) {
+    await taxpayer.deleteOne({});
+    res.status(200).json({
+      success: true,
+      message: 'Taxpayer deleted successfully',
+    });
+  } else {
+    res.status(404).send({ success: false, message: 'Taxpayer not found!' });
+  }
+});
+
 router.route('/').post(fetchTaxpayerDetails).get(allTaxRecordDoc);
-router.route('/:id').put(updateTaxpayer);
+router.route('/:id').put(updateTaxpayer).delete(deleteTaxpayer);
 router.route('/signup').post(createTaxpayerAccount);
 router.route('/login').post(loginAuthentication);
 
