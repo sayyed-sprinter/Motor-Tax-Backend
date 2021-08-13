@@ -163,3 +163,57 @@ describe('Update insurance agent verification information ', () => {
     expect(response.body.success).toEqual(true);
   });
 });
+
+
+describe('GET latest insurance agent information', () => {
+  jest.setTimeout(30000);
+  test('It should fetch latest insurance agent information', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/insurance-agents/latest');
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
+/*
+describe('GET insurance agent documents', () => {
+  jest.setTimeout(30000);
+  test('It should fetch insurance agent documents', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/insurance-agents');
+>>>>>>> 92312157189eec3e6c5b4e5c76b9580ccc36ac34
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+*/
+//Login into System
+describe('Login user into system', () => {
+  const loginInfo = {
+     email:"amit@gmail.com",
+     password:"9999n"
+  };
+  jest.setTimeout(30000);
+  test('It should validate email and password to login', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).post(
+      '/api/taxpayer/login/',loginInfo
+    );
+ 
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
+//Delete User Account
+describe('DELETE user profile ', () => {
+  jest.setTimeout(30000);
+  test('It should delete user information by id', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).delete(
+      '/api/taxpayer/61138313caa67d9c5625ee4f6565'
+    );
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
