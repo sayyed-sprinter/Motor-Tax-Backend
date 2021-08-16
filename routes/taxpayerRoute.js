@@ -224,7 +224,7 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
 
 // for taxpayer docs
 const allTaxRecordDoc = asyncHandler(async (req, res) => {
-  const allTaxRecordDocs = await taxRecord.find();
+  const allTaxRecordDocs = await taxRecord.find().sort({ createdAt: -1 });
 
   try {
     res.status(200).send({ success: true, allTaxRecordDocs: allTaxRecordDocs });
