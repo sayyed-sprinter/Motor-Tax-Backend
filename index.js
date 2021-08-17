@@ -15,6 +15,7 @@ const insuranceReportRoute = require('./routes/insuranceReportRoute');
 const taxDetailRoute = require('./routes/taxDetailRoute');
 const faqsRoute = require('./routes/faqsRoute');
 const adminRoute = require('./routes/adminRoute');
+const taxRecordRoute = require('./routes/taxRecordRoute');
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use('/api/insurance-report', insuranceReportRoute);
 app.use('/api/tax-details', taxDetailRoute);
 app.use('/api/faqs', faqsRoute);
 app.use('/api/admin', adminRoute);
+app.use('/api/tax-record', taxRecordRoute);
 
 app.get('/', (req, res) => {
   res.send('API is running');
