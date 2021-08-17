@@ -87,30 +87,44 @@ const calculateTax = (
   const chargeableTax = parseInt(numOfYears) * rate;
 
   // Calculate Num of months
-  const numOfMonths = currentMonth - registeredMonth;
-  const numOfDays = currentDay - registeredDay;
+  const numOfMonths =
+    currentMonth > registeredMonth
+      ? currentMonth - registeredMonth
+      : registeredMonth - currentMonth;
+  const numOfDays =
+    currentDay > registeredDay
+      ? currentDay - registeredDay
+      : registeredDay - currentDay;
 
   // console.log(
   //   `currentyear: ${currentYear}, Num of years: ${numOfYears} months: ${numOfMonths} days: ${numOfDays}`
   // );
 
   // 2. check if fine should be charged or not
-  if (numOfYears > 1 && numOfMonths > 3) {
-    if (numOfDays > 0) {
-      // console.log('entered');
-      const fineForYears = numOfYears - 1;
-      const fine = (fineForYears * rate * 32) / 100;
-      // console.log(
-      //   `Chargebale tax = ${chargeableTax}, fine for years = ${fineForYears} and fine = ${fine}`
-      // );
-      console.log(`whats chargeableTax2: ${chargeableTax}`);
-      taxDetails = {
-        numOfYears: numOfYears,
-        chargeableTax: chargeableTax,
-        fineForYears: fineForYears,
-        fine: fine,
-      };
-    }
+  if (
+    (numOfYears === 1 && numOfMonths > 3 && numOfDays > 0) ||
+    numOfYears >= 2
+  ) {
+    // console.log('entered');
+    const fineForYears = numOfYears - 1;
+    const fine = (fineForYears * rate * 32) / 100;
+    // console.log(
+    //   `Chargebale tax = ${chargeableTax}, fine for years = ${fineForYears} and fine = ${fine}`
+    // );
+    // console.log(`whats chargeableTax2: ${chargeableTax}`);
+    taxDetails = {
+      numOfYears: numOfYears,
+      chargeableTax: chargeableTax,
+      fineForYears: fineForYears,
+      fine: fine,
+    };
+  } else {
+    taxDetails = {
+      numOfYears: numOfYears,
+      chargeableTax: chargeableTax,
+      fineForYears: 0,
+      fine: 0,
+    };
   }
 
   return taxDetails;
@@ -147,6 +161,8 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
     })
     .sort({ createdAt: -1 });
 
+  // console.log(`fetchLastTaxPaidYear is ${fetchLastTaxPaidYear}`);
+
   const lastTaxPaidYear = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[3];
   const lastTaxPaidMonth = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[1];
   const lastTaxPaidDay = `${fetchLastTaxPaidYear.createdAt}`.split(' ')[2];
@@ -172,7 +188,7 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
 
       const taxableRate = calculateTaxRate(type, cc);
 
-      console.log(taxableRate);
+      // console.log(taxableRate);
 
       const taxDetails = calculateTax(
         registeredMonth,
@@ -195,7 +211,7 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
         docs: [{ bluebook_file_path, citizenship_file_path, policy_file_path }],
       });
       const recordInsertedObj = await newTaxRecords.save();
-      console.log(recordInsertedObj);
+      // console.log(`recordInsertedObj at line 200 ${recordInsertedObj}`);
       // console.log(fetchTaxpayer[0]);
       const taxpayerObj = { ...fetchTaxpayer[0] };
       const taxpayerData = taxpayerObj._doc;
@@ -224,12 +240,12 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
 
 // for taxpayer docs
 const allTaxRecordDoc = asyncHandler(async (req, res) => {
-  const allTaxRecordDocs = await taxRecord.find();
+  const allTaxRecordDocs = await taxRecord.find().sort({ createdAt: -1 });
 
   try {
     res.status(200).send({ success: true, allTaxRecordDocs: allTaxRecordDocs });
   } catch (err) {
-    console.log(`Error occured in /api/taxpayer/ get request: ${err}`);
+    // console.log(`Error occured in /api/taxpayer/ get request: ${err}`);
     res.status(404).send({ success: false, message: err });
   }
 });
@@ -274,8 +290,6 @@ const createTaxpayerAccount = asyncHandler(async (req, res) => {
     policy_file_path,
   } = req.body;
 
-  console.log(lastTaxPaidDate);
-
   const taxpayerSignupDetails = new Taxpayer({
     taxpayer_name,
     bluebook_number,
@@ -303,6 +317,9 @@ const createTaxpayerAccount = asyncHandler(async (req, res) => {
     penaltyOnOverdue: 0,
     pollutingCharge: 0,
     docs: [{ bluebook_file_path, citizenship_file_path, policy_file_path }],
+    createdAt: `${lastTaxPaidDate.split('-')[0]}-${
+      lastTaxPaidDate.split('-')[1]
+    }-${lastTaxPaidDate.split('-')[2]}`,
   });
 
   const taxpayerCreated = await taxpayerSignupDetails.save();
@@ -321,13 +338,27 @@ const loginAuthentication = asyncHandler(async (req, res) => {
     res.status(200).send({ success: true, taxpayer });
   } else {
     res
-      .status(200)
+      .status(404)
       .send({ success: false, message: 'Invalid email or password!' });
   }
 });
 
+const deleteTaxpayer = asyncHandler(async (req, res) => {
+  const taxpayer = await Taxpayer.findById(req.params.id);
+
+  if (taxpayer) {
+    await taxpayer.deleteOne({});
+    res.status(200).json({
+      success: true,
+      message: 'Taxpayer deleted successfully',
+    });
+  } else {
+    res.status(404).send({ success: false, message: 'Taxpayer not found!' });
+  }
+});
+
 router.route('/').post(fetchTaxpayerDetails).get(allTaxRecordDoc);
-router.route('/:id').put(updateTaxpayer);
+router.route('/:id').put(updateTaxpayer).delete(deleteTaxpayer);
 router.route('/signup').post(createTaxpayerAccount);
 router.route('/login').post(loginAuthentication);
 

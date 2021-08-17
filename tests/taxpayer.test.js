@@ -165,10 +165,21 @@ describe('Update insurance agent verification information ', () => {
 });
 
 
+describe('GET latest insurance agent information', () => {
+  jest.setTimeout(30000);
+  test('It should Update taxpayer verification information ', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).put(
+      '/api/taxpayer/610a675eea2ce915be178e22',
+      updateInsuranceAgentInfo
+    );
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
 
-
-//Create user Profile
-describe('POST user information', () => {
+/*
+describe('GET insurance agent documents', () => {
   jest.setTimeout(30000);
 
   test('It should post user details', async () => {
@@ -187,27 +198,57 @@ describe('POST user information', () => {
          password:"9999n"
     };
     jest.setTimeout(50000);
-    const response = await request(app)
-      .post('/api/taxpayer/signup/')
-      .send(userInfo);
-
+    const response = await request(app).get('/api/insurance-agents');
+>>>>>>> ccb13d0b8e3e65a6c32188e7b27a320fcfd9ec6a
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+*/
+//Login into System
+describe('Login user into system', () => {
+  const loginInfo = {
+     email:"amit@gmail.com",
+     password:"9999n"
+  };
+  jest.setTimeout(30000);
+  test('It should validate email and password to login', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).post(
+      '/api/taxpayer/login/',loginInfo
+    );
+ 
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
 });
 
-
-//View Profile
-describe('GET user profile ', () => {
+//Delete User Account
+describe('DELETE user profile ', () => {
   jest.setTimeout(30000);
-  test('It should fetch user information by id', async () => {
- 
+  test('It should delete user information by id', async () => {
     jest.setTimeout(50000);
-    const response = await request(app).get(
-      '/api/taxpayer/6113bb98824439001522913b'
+    const response = await request(app).delete(
+      '/api/taxpayer/61138313caa67d9c5625ee4f6565'
     );
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
 });
 
+
+//Check payment history
+describe('GET payment history', () => {
+  const checkHistory = {
+    bluebook_number:3333
+  };
+  jest.setTimeout(30000);
+  test('It should fetch payment history', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get(
+      '/api/tax-record',checkHistory
+    );
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});

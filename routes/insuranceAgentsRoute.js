@@ -5,9 +5,10 @@ const insuranceagents = require('../models/insuranceAgentsModel');
 
 const router = express.Router();
 
-const allInsuranceAgents = asyncHandler(async (req, res) => {
-  const allInsuranceAgents = await insuranceagents.find();
 
+const allInsuranceAgents = asyncHandler(async (req, res) => {
+  const allInsuranceAgents = await insuranceagents.find()
+  .sort({ createdAt: -1 });
   try {
     res
       .status(200)

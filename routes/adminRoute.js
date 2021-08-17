@@ -29,11 +29,26 @@ const loginAuthentication = asyncHandler(async (req, res) => {
     res.status(200).send({ success: true, adminUser });
   } else {
     res
-      .status(200)
+      .status(404)
       .send({ success: false, message: 'Invalid email or password!' });
   }
 });
 
+const deleteAdmin = asyncHandler(async (req, res) => {
+  const adminfetched = await admin.findById(req.params.id);
+
+  if (adminfetched) {
+    await adminfetched.deleteOne({});
+    res.status(200).json({
+      success: true,
+      message: 'Admin deleted successfully!',
+    });
+  } else {
+    res.status(404).send({ success: false, message: 'Admin not found!' });
+  }
+});
+
+router.route('/:id').delete(deleteAdmin);
 router.route('/signup').post(createAdminAccount);
 router.route('/login').post(loginAuthentication);
 
