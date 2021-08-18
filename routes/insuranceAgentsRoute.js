@@ -50,12 +50,9 @@ const addInsuranceAgents = asyncHandler(async (req, res) => {
   }
 });
 
-const latestInsuranceAgents = asyncHandler(async (req, res) => {
-  const latestInsuranceAgents = await insuranceagents
-    .find()
-    .limit(14)
-    .sort({ createdAt: -1 });
 
+const latestInsuranceAgents = asyncHandler(async (req, res) => {
+  const latestInsuranceAgents = await insuranceagents.find().limit(14).sort({ createdAt: -1 });
   try {
     res
       .status(200)
