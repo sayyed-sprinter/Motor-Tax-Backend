@@ -252,3 +252,21 @@ describe('GET payment history', () => {
     expect(response.body.success).toEqual(true);
   });
 });
+
+// TEST APPLICATION RATING
+describe('POST application rating', () => {
+  const ratingInfo = {
+    rating: 4,
+  };
+  jest.setTimeout(30000);
+  test('It should record application rating by taxpayer', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).post(
+      '/api/tax-record/rating/611b91680d526d0016232f5c/',
+      ratingInfo
+    );
+
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
