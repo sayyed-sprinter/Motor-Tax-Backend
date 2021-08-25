@@ -252,3 +252,39 @@ describe('GET payment history', () => {
     expect(response.body.success).toEqual(true);
   });
 });
+
+// TEST APPLICATION RATING
+describe('POST application rating', () => {
+  const ratingInfo = {
+    rating: 4,
+  };
+  jest.setTimeout(30000);
+  test('It should record application rating by taxpayer', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).post(
+      '/api/tax-record/rating/611b91680d526d0016232f5c/',
+      ratingInfo
+    );
+
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
+// TEST APPLICATION FEEDBACK FROM TAXPAYER
+describe('POST application feedback', () => {
+  const feedbackDetail = {
+    feedback: 4,
+  };
+  jest.setTimeout(30000);
+  test('It should record taxpayer feedback', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).post(
+      '/api/tax-record/feedback/611b91680d526d0016232f5c/',
+      feedbackDetail
+    );
+
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
