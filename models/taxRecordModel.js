@@ -15,6 +15,10 @@ const taxRecordSchema = new mongoose.Schema(
     docs: { type: Array, required: true },
     verified: { type: Boolean, required: true, default: false },
     adminComment: { type: String, default: '' },
+    feedback: { type: String, default: '' },
+    rating: { type: Number, default: 0 },
+    nextPaymentDate: { type: Date, default: '' },
+    remainingDays: { type: Number, default: 365 },
   },
   {
     timestamps: true,

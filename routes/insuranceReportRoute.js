@@ -111,21 +111,12 @@ const generateInsuranceReport = asyncHandler(async (req, res) => {
         });
 
         // GET COVERAGES OF BIKE FILTERED WITH ENGINE_CC
-        const coverages = await insurancecoverage.find(
-          {
-            $and: [{ vehicle_type: 'bike' }, { engine_cc: vehicleCCStr }],
-          },
-          function (err, result) {
-            if (!err) return result;
-          }
-        );
-
-        // INITIATE OBJ, FILTER COVERAGE OF COMPANY AND PUT INTO OBJ
-        let coverageObj = {};
-        coverages.forEach((coverage) => {
-          if (premiumDetails._id == coverage.insurance_company) {
-            coverageObj = coverage;
-          }
+        const coverages = await insurancecoverage.find({
+          $and: [
+            { vehicle_type: 'bike' },
+            { engine_cc: vehicleCCStr },
+            { insurance_company: premiumDetails._id },
+          ],
         });
 
         const insuranceReports = new insuranceReport({
@@ -135,23 +126,20 @@ const generateInsuranceReport = asyncHandler(async (req, res) => {
           vehicle_number: vehicle_number,
           insuranceExpiryDate: expiryDate,
           engine_cc: engine_cc,
-          type: `${coverageObj.vehicle_type}`,
-          insurance_type: `${coverageObj.insurance_type}`,
-          premium: coverageObj.premium || '3500',
-          death: `${coverageObj.death}`,
-          disabled: `${coverageObj.disabled}`,
-          injured: `${coverageObj.injured}`,
-          medical_expenses: `${coverageObj.medical_expenses}`,
-          attendant_expenses: `${coverageObj.attendant_expenses}`,
+          type: `${coverages[0].vehicle_type}`,
+          insurance_type: `${coverages[0].insurance_type}`,
+          premium: coverages[0].premium || '3500',
+          death: `${coverages[0].death}`,
+          disabled: `${coverages[0].disabled}`,
+          injured: `${coverages[0].injured}`,
+          medical_expenses: `${coverages[0].medical_expenses}`,
+          attendant_expenses: `${coverages[0].attendant_expenses}`,
         });
         const recordInserted = await insuranceReports.save();
-        const policy_number = recordInserted._id;
-
-        console.log(recordInserted);
 
         res.status(200).send({
           success: true,
-          insuranceReports,
+          insuranceReports: recordInserted,
         });
       } else {
         res.status(404).send({

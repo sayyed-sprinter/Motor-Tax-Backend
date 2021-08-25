@@ -164,7 +164,6 @@ describe('Update insurance agent verification information ', () => {
   });
 });
 
-
 describe('GET latest insurance agent information', () => {
   jest.setTimeout(30000);
   test('It should Update taxpayer verification information ', async () => {
@@ -208,16 +207,14 @@ describe('GET insurance agent documents', () => {
 //Login into System
 describe('Login user into system', () => {
   const loginInfo = {
-     email:"amit@gmail.com",
-     password:"9999n"
+    email: 'amit@gmail.com',
+    password: '9999n',
   };
   jest.setTimeout(30000);
   test('It should validate email and password to login', async () => {
     jest.setTimeout(50000);
-    const response = await request(app).post(
-      '/api/taxpayer/login/',loginInfo
-    );
- 
+    const response = await request(app).post('/api/taxpayer/login/', loginInfo);
+
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });
@@ -236,18 +233,26 @@ describe('DELETE user profile ', () => {
   });
 });
 
-
 //Check payment history
 describe('GET payment history', () => {
   const checkHistory = {
-    bluebook_number:3333
+    bluebook_number: 3333,
   };
   jest.setTimeout(30000);
   test('It should fetch payment history', async () => {
     jest.setTimeout(50000);
-    const response = await request(app).get(
-      '/api/tax-record',checkHistory
-    );
+    const response = await request(app).get('/api/tax-record', checkHistory);
+    jest.setTimeout(100000);
+    expect(response.body.success).toEqual(true);
+  });
+});
+
+//DISPLAY FEEDBACK AND RATING
+describe('GET feedback and rating from tax record', () => {
+  jest.setTimeout(30000);
+  test('It should fetch  feedback and rating from tax record', async () => {
+    jest.setTimeout(50000);
+    const response = await request(app).get('/api/tax-record/', checkHistory);
     jest.setTimeout(100000);
     expect(response.body.success).toEqual(true);
   });

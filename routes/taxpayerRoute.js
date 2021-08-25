@@ -7,21 +7,21 @@ const taxRecord = require('../models/taxRecordModel');
 const router = express.Router();
 
 const convertMonthNumeric = (month) => {
-  var date = 0;
-  month === 'Jan' && (date = 1);
-  month === 'Feb' && (date = 2);
-  month === 'Mar' && (date = 3);
-  month === 'Apr' && (date = 4);
-  month === 'May' && (date = 5);
-  month === 'Jun' && (date = 6);
-  month === 'Jul' && (date = 7);
-  month === 'Aug' && (date = 8);
-  month === 'Sep' && (date = 9);
-  month === 'Oct' && (date = 10);
-  month === 'Nov' && (date = 11);
-  month === 'Dec' && (date = 12);
+  var mon = 0;
+  month === 'Jan' && (mon = 1);
+  month === 'Feb' && (mon = 2);
+  month === 'Mar' && (mon = 3);
+  month === 'Apr' && (mon = 4);
+  month === 'May' && (mon = 5);
+  month === 'Jun' && (mon = 6);
+  month === 'Jul' && (mon = 7);
+  month === 'Aug' && (mon = 8);
+  month === 'Sep' && (mon = 9);
+  month === 'Oct' && (mon = 10);
+  month === 'Nov' && (mon = 11);
+  month === 'Dec' && (mon = 12);
 
-  return date;
+  return mon;
 };
 
 const calculateTaxRate = (vehicleType, cc) => {
@@ -130,6 +130,29 @@ const calculateTax = (
   return taxDetails;
 };
 
+const nextPaymentDate = (registeredDate) => {
+  const currMonth = new Date().getMonth();
+  const currDay = new Date().getDate();
+  const year = new Date().getFullYear();
+  const nextYear = year + 1;
+  const month = convertMonthNumeric(registeredDate.split(' ')[1]);
+  const day = parseInt(registeredDate.split(' ')[2]) + 1;
+  const newDate = new Date(year, currMonth, currDay);
+
+  const currDate = new Date(`${month}/${day}/${nextYear}`);
+  const excludeEndDay = 1;
+
+  const remainingDays =
+    newDate > currDate
+      ? (newDate - currDate) / (1000 * 60 * 60 * 24) - excludeEndDay
+      : (currDate - newDate) / (1000 * 60 * 60 * 24) - excludeEndDay;
+
+  if (newDate > currDate) {
+    return { next_date: newDate, remainingDays };
+  }
+  return { next_date: currDate, remainingDays };
+};
+
 // FETCH TAXPAYER DETAILS
 const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
   const {
@@ -197,6 +220,11 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
         lastTaxPaidYear
       );
 
+      const nextTaxPaymentDate = nextPaymentDate(registeredDate).next_date;
+      const remainingDays = Math.floor(
+        nextPaymentDate(registeredDate).remainingDays
+      );
+
       const newTaxRecords = new taxRecord({
         taxpayer: taxpayer_name,
         bluebook_number: bluebook_number,
@@ -209,9 +237,11 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
         penaltyOnOverdue: `${taxDetails.fine}`,
         pollutingCharge: 0,
         docs: [{ bluebook_file_path, citizenship_file_path, policy_file_path }],
+        nextPaymentDate: nextTaxPaymentDate,
+        remainingDays: remainingDays,
       });
       const recordInsertedObj = await newTaxRecords.save();
-      // console.log(`recordInsertedObj at line 200 ${recordInsertedObj}`);
+      console.log(`recordInsertedObj at line 214 ${recordInsertedObj}`);
       // console.log(fetchTaxpayer[0]);
       const taxpayerObj = { ...fetchTaxpayer[0] };
       const taxpayerData = taxpayerObj._doc;
@@ -222,6 +252,7 @@ const fetchTaxpayerDetails = asyncHandler(async (req, res) => {
         ...taxpayerData,
         ...recordInserted,
         lastTaxPaidOn: lastTaxPaidOn,
+        recordId: recordInsertedObj._id,
       });
     } else {
       res.status(404).send({
@@ -333,9 +364,24 @@ const loginAuthentication = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const taxpayer = await Taxpayer.findOne({ $and: [{ email }, { password }] });
+  const taxRecordDetails = await taxRecord
+    .findOne({
+      $and: [
+        { bluebook_number: taxpayer.bluebook_number },
+        { taxpayer: taxpayer.taxpayer_name },
+      ],
+    })
+    .sort({ createdAt: -1 });
 
   if (taxpayer) {
-    res.status(200).send({ success: true, taxpayer });
+    res
+      .status(200)
+      .send({
+        success: true,
+        taxpayer,
+        next_payment: taxRecordDetails.nextPaymentDate,
+        remaining_days: taxRecordDetails.remainingDays,
+      });
   } else {
     res
       .status(404)
